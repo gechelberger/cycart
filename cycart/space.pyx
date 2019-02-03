@@ -90,6 +90,13 @@ cdef class V2:
             raise ZeroDivisionError()
         return ret
 
+    def dot(V2 lhs, V2 rhs not None):
+        return c.c2_dot_vector(lhs.data, rhs.data)
+
+    def cross(V2 lhs, V2 rhs not None):
+        return c.c2_cross_vector(lhs.data, rhs.data)
+
+
     def scaled(V2 self, double ratio):
         cdef V2 ret = V2.__new__(V2)
         if not c.c2_mul_scalar(ret.data, self.data, ratio):
@@ -102,8 +109,8 @@ cdef class V2:
             raise RuntimeError("unknown error")
         return ret
 
-    def approx(V2 self, V2 other not None):
-        return c.c2_approx(self.data, other.data)
+    def approx(V2 self, V2 other not None, double rtol=1e-9, double atol=0):
+        return c.c2_approx(self.data, other.data, rtol, atol)
 
     def __repr__(V2 self):
         return 'V2(%f, %f)' % (self.data.x, self.data.y)
