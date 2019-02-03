@@ -31,3 +31,27 @@ def test_v2_add():
 
     with pytest.raises(TypeError):
         None + v1
+
+def test_v2_sub():
+    v1 = V2(100, 200)
+    v2 = V2(1, 2)
+
+    v3 = v1 - v2
+    assert v3.x == 99
+    assert v3.y == 198
+
+    v3 = v2 - v1
+    assert v3.x == -99
+    assert v3.y == -198
+
+    with pytest.raises(TypeError):
+        v1 - 1
+
+    with pytest.raises(TypeError):
+        1 - v1
+
+    with pytest.raises(TypeError):
+        v1 - None
+
+    with pytest.raises(TypeError):
+        None - v1
