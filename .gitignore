@@ -1,0 +1,9 @@
+.eggs/
+dist/
+build/
+venv/
+.idea/
+.tox/
+*.egg-info/
+**.pyc
+**.so
