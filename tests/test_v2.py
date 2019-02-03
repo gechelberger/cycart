@@ -1,13 +1,21 @@
 import pytest
 import math
 
-from cycart import V2
+from cycart import V2, P2
 
 def test_v2_create():
     vector = V2(100, 200)
 
     assert vector.x == 100
     assert vector.y == 200
+
+def test_v2_as_point():
+    vector = V2(100, 200)
+
+    point = vector.point()
+    assert isinstance(point, P2)
+    assert point.x == 100
+    assert point.y == 200
 
 def test_v2_add():
     v1 = V2(100, 200)
@@ -109,7 +117,7 @@ def test_v2_approx():
 
     assert not v1.approx(V2(5.0000001, 10.0000001))
 
-    #todo
+    assert v1.approx(V2(5.01, 10.01), atol=0.1)
 
 def test_v2_rotated():
     v1 = V2(1, 0)
@@ -149,4 +157,21 @@ def test_v2_cross():
 
     with pytest.raises(TypeError):
         v1.cross(None)
+
+def test_v2_scaled():
+    v1 = V2(10, 20)
+
+    vtest = v1.scaled(10)
+    assert vtest.x == 100
+    assert vtest.y == 200
+
+    vtest = v1.scaled(1 / 10)
+    assert vtest.x == 1
+    assert vtest.y == 2
+
+    with pytest.raises(TypeError):
+        v1.scaled(v1)
+
+    with pytest.raises(TypeError):
+        v1.scaled(None)
 
