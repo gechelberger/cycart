@@ -95,7 +95,7 @@ cdef inline bint c2_rotate_vector(C2Data& out, const C2Data& vector, double radi
 cdef inline bint c2_rotate_around(C2Data& out, const C2Data& center, const C2Data& point, double radians):
     c2_sub_vector(out, point, center)
     c2_rotate_vector(out, out, radians)
-    c2_sub_vector(out, center, out)
+    c2_add_vector(out, center, out)
     return 1
 
 cdef inline bint c2_vectors_acute_angle(double& radians, const C2Data& v1, const C2Data& v2):

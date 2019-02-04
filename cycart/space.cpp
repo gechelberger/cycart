@@ -1310,6 +1310,12 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
         __Pyx__ArgTypeTest(obj, type, name, exact))
 static int __Pyx__ArgTypeTest(PyObject *obj, PyTypeObject *type, const char *name, int exact);
 
+/* tp_new.proto */
+#define __Pyx_tp_new(type_obj, args) __Pyx_tp_new_kwargs(type_obj, args, NULL)
+static CYTHON_INLINE PyObject* __Pyx_tp_new_kwargs(PyObject* type_obj, PyObject* args, PyObject* kwargs) {
+    return (PyObject*) (((PyTypeObject*)type_obj)->tp_new((PyTypeObject*)type_obj, args, kwargs));
+}
+
 /* WriteUnraisableException.proto */
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
@@ -1317,12 +1323,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
 
 /* PyIntCompare.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_EqObjC(PyObject *op1, PyObject *op2, long intval, long inplace);
-
-/* tp_new.proto */
-#define __Pyx_tp_new(type_obj, args) __Pyx_tp_new_kwargs(type_obj, args, NULL)
-static CYTHON_INLINE PyObject* __Pyx_tp_new_kwargs(PyObject* type_obj, PyObject* args, PyObject* kwargs) {
-    return (PyObject*) (((PyTypeObject*)type_obj)->tp_new((PyTypeObject*)type_obj, args, kwargs));
-}
 
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
@@ -5666,6 +5666,930 @@ static PyObject *__pyx_pf_6cycart_5space_2P2_24__setstate_cython__(CYTHON_UNUSED
   return __pyx_r;
 }
 
+/* "cycart/space.pxd":21
+ * 
+ * 
+ * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_v2_v2_add(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("v2_v2_add", 0);
+
+  /* "cycart/space.pxd":22
+ * 
+ * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":23
+ * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_add_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":24
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 24, __pyx_L1_error)
+
+    /* "cycart/space.pxd":23
+ * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":25
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":21
+ * 
+ * 
+ * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.v2_v2_add", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":27
+ *     return ret
+ * 
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_v2_v2_sub(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("v2_v2_sub", 0);
+
+  /* "cycart/space.pxd":28
+ * 
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":29
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":30
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 30, __pyx_L1_error)
+
+    /* "cycart/space.pxd":29
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":31
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":27
+ *     return ret
+ * 
+ * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.v2_v2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":33
+ *     return ret
+ * 
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_p2_v2_add(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("p2_v2_add", 0);
+
+  /* "cycart/space.pxd":34
+ * 
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":35
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_add_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":36
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 36, __pyx_L1_error)
+
+    /* "cycart/space.pxd":35
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":37
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":33
+ *     return ret
+ * 
+ * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.p2_v2_add", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":39
+ *     return ret
+ * 
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_p2_v2_sub(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("p2_v2_sub", 0);
+
+  /* "cycart/space.pxd":40
+ * 
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":41
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":42
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 42, __pyx_L1_error)
+
+    /* "cycart/space.pxd":41
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":43
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":39
+ *     return ret
+ * 
+ * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.p2_v2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":45
+ *     return ret
+ * 
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_v2_p2_sub(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("v2_p2_sub", 0);
+
+  /* "cycart/space.pxd":46
+ * 
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":47
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":48
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 48, __pyx_L1_error)
+
+    /* "cycart/space.pxd":47
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":49
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":45
+ *     return ret
+ * 
+ * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef P2 ret = P2.__new__(P2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.v2_p2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":51
+ *     return ret
+ * 
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_p2_p2_sub(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_rhs) {
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
+  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  __Pyx_RefNannySetupContext("p2_p2_sub", 0);
+
+  /* "cycart/space.pxd":52
+ * 
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ */
+  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cycart/space.pxd":53
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
+  if (unlikely(__pyx_t_2)) {
+
+    /* "cycart/space.pxd":54
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 54, __pyx_L1_error)
+
+    /* "cycart/space.pxd":53
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
+ *         raise RuntimeError("unknown error")
+ *     return ret
+ */
+  }
+
+  /* "cycart/space.pxd":55
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ *         raise RuntimeError("unknown error")
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = __pyx_v_ret;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":51
+ *     return ret
+ * 
+ * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
+ *     cdef V2 ret = V2.__new__(V2)
+ *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cycart.space.p2_p2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":57
+ *     return ret
+ * 
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
+ *     op_type = type(py_obj)
+ *     if op_type is V2:
+ */
+
+static CYTHON_INLINE int __pyx_f_6cycart_5space_v2_coerce(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, PyObject *__pyx_v_py_obj) {
+  PyTypeObject *__pyx_v_op_type = NULL;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  double __pyx_t_4;
+  __Pyx_RefNannySetupContext("v2_coerce", 0);
+
+  /* "cycart/space.pxd":58
+ * 
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)             # <<<<<<<<<<<<<<
+ *     if op_type is V2:
+ *         v2_extract(out, py_obj)
+ */
+  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_py_obj)));
+  __pyx_v_op_type = ((PyTypeObject*)((PyObject *)Py_TYPE(__pyx_v_py_obj)));
+
+  /* "cycart/space.pxd":59
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)
+ *     if op_type is V2:             # <<<<<<<<<<<<<<
+ *         v2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ */
+  __pyx_t_1 = (__pyx_v_op_type == __pyx_ptype_6cycart_5space_V2);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "cycart/space.pxd":60
+ *     op_type = type(py_obj)
+ *     if op_type is V2:
+ *         v2_extract(out, py_obj)             # <<<<<<<<<<<<<<
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj
+ */
+    if (!(likely(((__pyx_v_py_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_obj, __pyx_ptype_6cycart_5space_V2))))) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_f_6cycart_5space_v2_extract(__pyx_v_out, ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_v_py_obj));
+
+    /* "cycart/space.pxd":59
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)
+ *     if op_type is V2:             # <<<<<<<<<<<<<<
+ *         v2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "cycart/space.pxd":61
+ *     if op_type is V2:
+ *         v2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
+ *         out.x = py_obj
+ *         out.y = py_obj
+ */
+  __pyx_t_1 = (__pyx_v_op_type == (&PyFloat_Type));
+  __pyx_t_3 = (__pyx_t_1 != 0);
+  if (!__pyx_t_3) {
+  } else {
+    __pyx_t_2 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = (__pyx_v_op_type == (&PyInt_Type));
+  __pyx_t_1 = (__pyx_t_3 != 0);
+  __pyx_t_2 = __pyx_t_1;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_2) {
+
+    /* "cycart/space.pxd":62
+ *         v2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj             # <<<<<<<<<<<<<<
+ *         out.y = py_obj
+ *     else:
+ */
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_v_out.x = __pyx_t_4;
+
+    /* "cycart/space.pxd":63
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj
+ *         out.y = py_obj             # <<<<<<<<<<<<<<
+ *     else:
+ *         return 0
+ */
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_v_out.y = __pyx_t_4;
+
+    /* "cycart/space.pxd":61
+ *     if op_type is V2:
+ *         v2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
+ *         out.x = py_obj
+ *         out.y = py_obj
+ */
+    goto __pyx_L3;
+  }
+
+  /* "cycart/space.pxd":65
+ *         out.y = py_obj
+ *     else:
+ *         return 0             # <<<<<<<<<<<<<<
+ *     return 1
+ * 
+ */
+  /*else*/ {
+    __pyx_r = 0;
+    goto __pyx_L0;
+  }
+  __pyx_L3:;
+
+  /* "cycart/space.pxd":66
+ *     else:
+ *         return 0
+ *     return 1             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
+ */
+  __pyx_r = 1;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":57
+ *     return ret
+ * 
+ * cdef inline bint v2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
+ *     op_type = type(py_obj)
+ *     if op_type is V2:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("cycart.space.v2_coerce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_op_type);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":68
+ *     return 1
+ * 
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
+ *     op_type = type(py_obj)
+ *     if op_type is P2:
+ */
+
+static CYTHON_INLINE int __pyx_f_6cycart_5space_p2_coerce(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, PyObject *__pyx_v_py_obj) {
+  PyTypeObject *__pyx_v_op_type = NULL;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  double __pyx_t_4;
+  __Pyx_RefNannySetupContext("p2_coerce", 0);
+
+  /* "cycart/space.pxd":69
+ * 
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)             # <<<<<<<<<<<<<<
+ *     if op_type is P2:
+ *         p2_extract(out, py_obj)
+ */
+  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_py_obj)));
+  __pyx_v_op_type = ((PyTypeObject*)((PyObject *)Py_TYPE(__pyx_v_py_obj)));
+
+  /* "cycart/space.pxd":70
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)
+ *     if op_type is P2:             # <<<<<<<<<<<<<<
+ *         p2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ */
+  __pyx_t_1 = (__pyx_v_op_type == __pyx_ptype_6cycart_5space_P2);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "cycart/space.pxd":71
+ *     op_type = type(py_obj)
+ *     if op_type is P2:
+ *         p2_extract(out, py_obj)             # <<<<<<<<<<<<<<
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj
+ */
+    if (!(likely(((__pyx_v_py_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_obj, __pyx_ptype_6cycart_5space_P2))))) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_f_6cycart_5space_p2_extract(__pyx_v_out, ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_v_py_obj));
+
+    /* "cycart/space.pxd":70
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
+ *     op_type = type(py_obj)
+ *     if op_type is P2:             # <<<<<<<<<<<<<<
+ *         p2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "cycart/space.pxd":72
+ *     if op_type is P2:
+ *         p2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
+ *         out.x = py_obj
+ *         out.y = py_obj
+ */
+  __pyx_t_1 = (__pyx_v_op_type == (&PyFloat_Type));
+  __pyx_t_3 = (__pyx_t_1 != 0);
+  if (!__pyx_t_3) {
+  } else {
+    __pyx_t_2 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = (__pyx_v_op_type == (&PyInt_Type));
+  __pyx_t_1 = (__pyx_t_3 != 0);
+  __pyx_t_2 = __pyx_t_1;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_2) {
+
+    /* "cycart/space.pxd":73
+ *         p2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj             # <<<<<<<<<<<<<<
+ *         out.y = py_obj
+ *     else:
+ */
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_v_out.x = __pyx_t_4;
+
+    /* "cycart/space.pxd":74
+ *     elif op_type is float or op_type is int:
+ *         out.x = py_obj
+ *         out.y = py_obj             # <<<<<<<<<<<<<<
+ *     else:
+ *         return 0
+ */
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
+    __pyx_v_out.y = __pyx_t_4;
+
+    /* "cycart/space.pxd":72
+ *     if op_type is P2:
+ *         p2_extract(out, py_obj)
+ *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
+ *         out.x = py_obj
+ *         out.y = py_obj
+ */
+    goto __pyx_L3;
+  }
+
+  /* "cycart/space.pxd":76
+ *         out.y = py_obj
+ *     else:
+ *         return 0             # <<<<<<<<<<<<<<
+ *     return 1
+ * 
+ */
+  /*else*/ {
+    __pyx_r = 0;
+    goto __pyx_L0;
+  }
+  __pyx_L3:;
+
+  /* "cycart/space.pxd":77
+ *     else:
+ *         return 0
+ *     return 1             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):
+ */
+  __pyx_r = 1;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":68
+ *     return 1
+ * 
+ * cdef inline bint p2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
+ *     op_type = type(py_obj)
+ *     if op_type is P2:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_WriteUnraisable("cycart.space.p2_coerce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_op_type);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":79
+ *     return 1
+ * 
+ * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):             # <<<<<<<<<<<<<<
+ *     (&out)[0] = py_obj.data
+ * 
+ */
+
+static CYTHON_INLINE void __pyx_f_6cycart_5space_p2_extract(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_py_obj) {
+  __Pyx_RefNannyDeclarations
+  struct __pyx_t_6cycart_6ctypes_C2Data __pyx_t_1;
+  __Pyx_RefNannySetupContext("p2_extract", 0);
+
+  /* "cycart/space.pxd":80
+ * 
+ * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):
+ *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):
+ */
+  __pyx_t_1 = __pyx_v_py_obj->data;
+  ((&__pyx_v_out)[0]) = __pyx_t_1;
+
+  /* "cycart/space.pxd":79
+ *     return 1
+ * 
+ * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):             # <<<<<<<<<<<<<<
+ *     (&out)[0] = py_obj.data
+ * 
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "cycart/space.pxd":82
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):             # <<<<<<<<<<<<<<
+ *     (&out)[0] = py_obj.data
+ */
+
+static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
+  __Pyx_RefNannyDeclarations
+  struct __pyx_t_6cycart_6ctypes_C2Data __pyx_t_1;
+  __Pyx_RefNannySetupContext("v2_extract", 0);
+
+  /* "cycart/space.pxd":83
+ * 
+ * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):
+ *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_1 = __pyx_v_py_obj->data;
+  ((&__pyx_v_out)[0]) = __pyx_t_1;
+
+  /* "cycart/space.pxd":82
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):             # <<<<<<<<<<<<<<
+ *     (&out)[0] = py_obj.data
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
 /* "cycart/ctypes.pxd":23
  * # utility functions
  * 
@@ -6441,7 +7365,7 @@ static CYTHON_INLINE int __pyx_f_6cycart_6ctypes_c2_rotate_around(struct __pyx_t
  * cdef inline bint c2_rotate_around(C2Data& out, const C2Data& center, const C2Data& point, double radians):
  *     c2_sub_vector(out, point, center)             # <<<<<<<<<<<<<<
  *     c2_rotate_vector(out, out, radians)
- *     c2_sub_vector(out, center, out)
+ *     c2_add_vector(out, center, out)
  */
   (void)(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_out, __pyx_v_point, __pyx_v_center));
 
@@ -6449,7 +7373,7 @@ static CYTHON_INLINE int __pyx_f_6cycart_6ctypes_c2_rotate_around(struct __pyx_t
  * cdef inline bint c2_rotate_around(C2Data& out, const C2Data& center, const C2Data& point, double radians):
  *     c2_sub_vector(out, point, center)
  *     c2_rotate_vector(out, out, radians)             # <<<<<<<<<<<<<<
- *     c2_sub_vector(out, center, out)
+ *     c2_add_vector(out, center, out)
  *     return 1
  */
   (void)(__pyx_f_6cycart_6ctypes_c2_rotate_vector(__pyx_v_out, __pyx_v_out, __pyx_v_radians));
@@ -6457,15 +7381,15 @@ static CYTHON_INLINE int __pyx_f_6cycart_6ctypes_c2_rotate_around(struct __pyx_t
   /* "cycart/ctypes.pxd":98
  *     c2_sub_vector(out, point, center)
  *     c2_rotate_vector(out, out, radians)
- *     c2_sub_vector(out, center, out)             # <<<<<<<<<<<<<<
+ *     c2_add_vector(out, center, out)             # <<<<<<<<<<<<<<
  *     return 1
  * 
  */
-  (void)(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_out, __pyx_v_center, __pyx_v_out));
+  (void)(__pyx_f_6cycart_6ctypes_c2_add_vector(__pyx_v_out, __pyx_v_center, __pyx_v_out));
 
   /* "cycart/ctypes.pxd":99
  *     c2_rotate_vector(out, out, radians)
- *     c2_sub_vector(out, center, out)
+ *     c2_add_vector(out, center, out)
  *     return 1             # <<<<<<<<<<<<<<
  * 
  * cdef inline bint c2_vectors_acute_angle(double& radians, const C2Data& v1, const C2Data& v2):
@@ -9411,930 +10335,6 @@ static CYTHON_INLINE PyObject *__pyx_f_6cycart_6ctypes_segment_circle_intersect(
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-
-/* "cycart/space.pxd":21
- * 
- * 
- * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_v2_v2_add(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("v2_v2_add", 0);
-
-  /* "cycart/space.pxd":22
- * 
- * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 22, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":23
- * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_add_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":24
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 24, __pyx_L1_error)
-
-    /* "cycart/space.pxd":23
- * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":25
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":21
- * 
- * 
- * cdef inline V2 v2_v2_add(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.v2_v2_add", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":27
- *     return ret
- * 
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_v2_v2_sub(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("v2_v2_sub", 0);
-
-  /* "cycart/space.pxd":28
- * 
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 28, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":29
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":30
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 30, __pyx_L1_error)
-
-    /* "cycart/space.pxd":29
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":31
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":27
- *     return ret
- * 
- * cdef inline V2 v2_v2_sub(V2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.v2_v2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":33
- *     return ret
- * 
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_p2_v2_add(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("p2_v2_add", 0);
-
-  /* "cycart/space.pxd":34
- * 
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 34, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":35
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_add_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":36
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 36, __pyx_L1_error)
-
-    /* "cycart/space.pxd":35
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":37
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":33
- *     return ret
- * 
- * cdef inline P2 p2_v2_add(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_add_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.p2_v2_add", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":39
- *     return ret
- * 
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_p2_v2_sub(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("p2_v2_sub", 0);
-
-  /* "cycart/space.pxd":40
- * 
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 40, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":41
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":42
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 42, __pyx_L1_error)
-
-    /* "cycart/space.pxd":41
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":43
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":39
- *     return ret
- * 
- * cdef inline P2 p2_v2_sub(P2 lhs, V2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.p2_v2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":45
- *     return ret
- * 
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_P2 *__pyx_f_6cycart_5space_v2_p2_sub(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_P2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("v2_p2_sub", 0);
-
-  /* "cycart/space.pxd":46
- * 
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
- *     cdef P2 ret = P2.__new__(P2)             # <<<<<<<<<<<<<<
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_P2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_P2)))) __PYX_ERR(0, 46, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":47
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":48
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 48, __pyx_L1_error)
-
-    /* "cycart/space.pxd":47
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":49
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":45
- *     return ret
- * 
- * cdef inline P2 v2_p2_sub(V2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
- *     cdef P2 ret = P2.__new__(P2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.v2_p2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":51
- *     return ret
- * 
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-static CYTHON_INLINE struct __pyx_obj_6cycart_5space_V2 *__pyx_f_6cycart_5space_p2_p2_sub(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_lhs, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_rhs) {
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_v_ret = 0;
-  struct __pyx_obj_6cycart_5space_V2 *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  __Pyx_RefNannySetupContext("p2_p2_sub", 0);
-
-  /* "cycart/space.pxd":52
- * 
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
- *     cdef V2 ret = V2.__new__(V2)             # <<<<<<<<<<<<<<
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- */
-  __pyx_t_1 = __Pyx_tp_new(((PyObject *)__pyx_ptype_6cycart_5space_V2), __pyx_empty_tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_6cycart_5space_V2)))) __PYX_ERR(0, 52, __pyx_L1_error)
-  __pyx_v_ret = ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "cycart/space.pxd":53
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  __pyx_t_2 = ((!(__pyx_f_6cycart_6ctypes_c2_sub_vector(__pyx_v_ret->data, __pyx_v_lhs->data, __pyx_v_rhs->data) != 0)) != 0);
-  if (unlikely(__pyx_t_2)) {
-
-    /* "cycart/space.pxd":54
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")             # <<<<<<<<<<<<<<
- *     return ret
- * 
- */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 54, __pyx_L1_error)
-
-    /* "cycart/space.pxd":53
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):             # <<<<<<<<<<<<<<
- *         raise RuntimeError("unknown error")
- *     return ret
- */
-  }
-
-  /* "cycart/space.pxd":55
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- *         raise RuntimeError("unknown error")
- *     return ret             # <<<<<<<<<<<<<<
- * 
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
- */
-  __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = __pyx_v_ret;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":51
- *     return ret
- * 
- * cdef inline V2 p2_p2_sub(P2 lhs, P2 rhs):             # <<<<<<<<<<<<<<
- *     cdef V2 ret = V2.__new__(V2)
- *     if not c.c2_sub_vector(ret.data, lhs.data, rhs.data):
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("cycart.space.p2_p2_sub", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF((PyObject *)__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":57
- *     return ret
- * 
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
- *     op_type = type(py_obj)
- *     if op_type is V2:
- */
-
-static CYTHON_INLINE int __pyx_f_6cycart_5space_v2_coerce(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, PyObject *__pyx_v_py_obj) {
-  PyTypeObject *__pyx_v_op_type = NULL;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  double __pyx_t_4;
-  __Pyx_RefNannySetupContext("v2_coerce", 0);
-
-  /* "cycart/space.pxd":58
- * 
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)             # <<<<<<<<<<<<<<
- *     if op_type is V2:
- *         v2_extract(out, py_obj)
- */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_py_obj)));
-  __pyx_v_op_type = ((PyTypeObject*)((PyObject *)Py_TYPE(__pyx_v_py_obj)));
-
-  /* "cycart/space.pxd":59
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)
- *     if op_type is V2:             # <<<<<<<<<<<<<<
- *         v2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- */
-  __pyx_t_1 = (__pyx_v_op_type == __pyx_ptype_6cycart_5space_V2);
-  __pyx_t_2 = (__pyx_t_1 != 0);
-  if (__pyx_t_2) {
-
-    /* "cycart/space.pxd":60
- *     op_type = type(py_obj)
- *     if op_type is V2:
- *         v2_extract(out, py_obj)             # <<<<<<<<<<<<<<
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj
- */
-    if (!(likely(((__pyx_v_py_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_obj, __pyx_ptype_6cycart_5space_V2))))) __PYX_ERR(0, 60, __pyx_L1_error)
-    __pyx_f_6cycart_5space_v2_extract(__pyx_v_out, ((struct __pyx_obj_6cycart_5space_V2 *)__pyx_v_py_obj));
-
-    /* "cycart/space.pxd":59
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)
- *     if op_type is V2:             # <<<<<<<<<<<<<<
- *         v2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- */
-    goto __pyx_L3;
-  }
-
-  /* "cycart/space.pxd":61
- *     if op_type is V2:
- *         v2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
- *         out.x = py_obj
- *         out.y = py_obj
- */
-  __pyx_t_1 = (__pyx_v_op_type == (&PyFloat_Type));
-  __pyx_t_3 = (__pyx_t_1 != 0);
-  if (!__pyx_t_3) {
-  } else {
-    __pyx_t_2 = __pyx_t_3;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_3 = (__pyx_v_op_type == (&PyInt_Type));
-  __pyx_t_1 = (__pyx_t_3 != 0);
-  __pyx_t_2 = __pyx_t_1;
-  __pyx_L4_bool_binop_done:;
-  if (__pyx_t_2) {
-
-    /* "cycart/space.pxd":62
- *         v2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj             # <<<<<<<<<<<<<<
- *         out.y = py_obj
- *     else:
- */
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
-    __pyx_v_out.x = __pyx_t_4;
-
-    /* "cycart/space.pxd":63
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj
- *         out.y = py_obj             # <<<<<<<<<<<<<<
- *     else:
- *         return 0
- */
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
-    __pyx_v_out.y = __pyx_t_4;
-
-    /* "cycart/space.pxd":61
- *     if op_type is V2:
- *         v2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
- *         out.x = py_obj
- *         out.y = py_obj
- */
-    goto __pyx_L3;
-  }
-
-  /* "cycart/space.pxd":65
- *         out.y = py_obj
- *     else:
- *         return 0             # <<<<<<<<<<<<<<
- *     return 1
- * 
- */
-  /*else*/ {
-    __pyx_r = 0;
-    goto __pyx_L0;
-  }
-  __pyx_L3:;
-
-  /* "cycart/space.pxd":66
- *     else:
- *         return 0
- *     return 1             # <<<<<<<<<<<<<<
- * 
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
- */
-  __pyx_r = 1;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":57
- *     return ret
- * 
- * cdef inline bint v2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
- *     op_type = type(py_obj)
- *     if op_type is V2:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("cycart.space.v2_coerce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_op_type);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":68
- *     return 1
- * 
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
- *     op_type = type(py_obj)
- *     if op_type is P2:
- */
-
-static CYTHON_INLINE int __pyx_f_6cycart_5space_p2_coerce(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, PyObject *__pyx_v_py_obj) {
-  PyTypeObject *__pyx_v_op_type = NULL;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  int __pyx_t_2;
-  int __pyx_t_3;
-  double __pyx_t_4;
-  __Pyx_RefNannySetupContext("p2_coerce", 0);
-
-  /* "cycart/space.pxd":69
- * 
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)             # <<<<<<<<<<<<<<
- *     if op_type is P2:
- *         p2_extract(out, py_obj)
- */
-  __Pyx_INCREF(((PyObject *)Py_TYPE(__pyx_v_py_obj)));
-  __pyx_v_op_type = ((PyTypeObject*)((PyObject *)Py_TYPE(__pyx_v_py_obj)));
-
-  /* "cycart/space.pxd":70
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)
- *     if op_type is P2:             # <<<<<<<<<<<<<<
- *         p2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- */
-  __pyx_t_1 = (__pyx_v_op_type == __pyx_ptype_6cycart_5space_P2);
-  __pyx_t_2 = (__pyx_t_1 != 0);
-  if (__pyx_t_2) {
-
-    /* "cycart/space.pxd":71
- *     op_type = type(py_obj)
- *     if op_type is P2:
- *         p2_extract(out, py_obj)             # <<<<<<<<<<<<<<
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj
- */
-    if (!(likely(((__pyx_v_py_obj) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_obj, __pyx_ptype_6cycart_5space_P2))))) __PYX_ERR(0, 71, __pyx_L1_error)
-    __pyx_f_6cycart_5space_p2_extract(__pyx_v_out, ((struct __pyx_obj_6cycart_5space_P2 *)__pyx_v_py_obj));
-
-    /* "cycart/space.pxd":70
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):
- *     op_type = type(py_obj)
- *     if op_type is P2:             # <<<<<<<<<<<<<<
- *         p2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- */
-    goto __pyx_L3;
-  }
-
-  /* "cycart/space.pxd":72
- *     if op_type is P2:
- *         p2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
- *         out.x = py_obj
- *         out.y = py_obj
- */
-  __pyx_t_1 = (__pyx_v_op_type == (&PyFloat_Type));
-  __pyx_t_3 = (__pyx_t_1 != 0);
-  if (!__pyx_t_3) {
-  } else {
-    __pyx_t_2 = __pyx_t_3;
-    goto __pyx_L4_bool_binop_done;
-  }
-  __pyx_t_3 = (__pyx_v_op_type == (&PyInt_Type));
-  __pyx_t_1 = (__pyx_t_3 != 0);
-  __pyx_t_2 = __pyx_t_1;
-  __pyx_L4_bool_binop_done:;
-  if (__pyx_t_2) {
-
-    /* "cycart/space.pxd":73
- *         p2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj             # <<<<<<<<<<<<<<
- *         out.y = py_obj
- *     else:
- */
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
-    __pyx_v_out.x = __pyx_t_4;
-
-    /* "cycart/space.pxd":74
- *     elif op_type is float or op_type is int:
- *         out.x = py_obj
- *         out.y = py_obj             # <<<<<<<<<<<<<<
- *     else:
- *         return 0
- */
-    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_py_obj); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
-    __pyx_v_out.y = __pyx_t_4;
-
-    /* "cycart/space.pxd":72
- *     if op_type is P2:
- *         p2_extract(out, py_obj)
- *     elif op_type is float or op_type is int:             # <<<<<<<<<<<<<<
- *         out.x = py_obj
- *         out.y = py_obj
- */
-    goto __pyx_L3;
-  }
-
-  /* "cycart/space.pxd":76
- *         out.y = py_obj
- *     else:
- *         return 0             # <<<<<<<<<<<<<<
- *     return 1
- * 
- */
-  /*else*/ {
-    __pyx_r = 0;
-    goto __pyx_L0;
-  }
-  __pyx_L3:;
-
-  /* "cycart/space.pxd":77
- *     else:
- *         return 0
- *     return 1             # <<<<<<<<<<<<<<
- * 
- * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):
- */
-  __pyx_r = 1;
-  goto __pyx_L0;
-
-  /* "cycart/space.pxd":68
- *     return 1
- * 
- * cdef inline bint p2_coerce(c.C2Data& out, py_obj):             # <<<<<<<<<<<<<<
- *     op_type = type(py_obj)
- *     if op_type is P2:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_WriteUnraisable("cycart.space.p2_coerce", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_op_type);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cycart/space.pxd":79
- *     return 1
- * 
- * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
- * 
- */
-
-static CYTHON_INLINE void __pyx_f_6cycart_5space_p2_extract(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, struct __pyx_obj_6cycart_5space_P2 *__pyx_v_py_obj) {
-  __Pyx_RefNannyDeclarations
-  struct __pyx_t_6cycart_6ctypes_C2Data __pyx_t_1;
-  __Pyx_RefNannySetupContext("p2_extract", 0);
-
-  /* "cycart/space.pxd":80
- * 
- * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):
- *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
- * 
- * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):
- */
-  __pyx_t_1 = __pyx_v_py_obj->data;
-  ((&__pyx_v_out)[0]) = __pyx_t_1;
-
-  /* "cycart/space.pxd":79
- *     return 1
- * 
- * cdef inline void p2_extract(c.C2Data& out, P2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
- * 
- */
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-/* "cycart/space.pxd":82
- *     (&out)[0] = py_obj.data
- * 
- * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
- */
-
-static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cycart_6ctypes_C2Data &__pyx_v_out, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
-  __Pyx_RefNannyDeclarations
-  struct __pyx_t_6cycart_6ctypes_C2Data __pyx_t_1;
-  __Pyx_RefNannySetupContext("v2_extract", 0);
-
-  /* "cycart/space.pxd":83
- * 
- * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):
- *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
- */
-  __pyx_t_1 = __pyx_v_py_obj->data;
-  ((&__pyx_v_out)[0]) = __pyx_t_1;
-
-  /* "cycart/space.pxd":82
- *     (&out)[0] = py_obj.data
- * 
- * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
- */
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
 static struct __pyx_vtabstruct_6cycart_5space_V2 __pyx_vtable_6cycart_5space_V2;
 
 static PyObject *__pyx_tp_new_6cycart_5space_V2(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
@@ -11297,11 +11297,11 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cycart/space.pxd":82
- *     (&out)[0] = py_obj.data
+  /* "cycart/ctypes.pxd":371
+ *     pass
  * 
- * cdef inline void v2_extract(c.C2Data& out, V2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
+ * cdef inline segment_circle_intersect():             # <<<<<<<<<<<<<<
+ *     pass
  */
 
   /*--- Wrapped vars code ---*/
