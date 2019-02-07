@@ -121,3 +121,15 @@ def test_intersection():
 
     l135 = Line.ByPoints(P2(0, 0), P2(-1, 1))
     assert horz.intersect(l135).approx(P2(-10, 10))
+
+
+def test_closest_point():
+    horz = Line.ByPoints(P2(-1, 10), P2(1, 10))
+
+    assert horz.closest_point(P2(0, 0)).approx(P2(0, 10))
+    assert horz.closest_point(P2(5, 10)).approx(P2(5, 10))
+
+    vert = Line.ByPoints(P2(10, 1), P2(10, -2))
+
+    assert vert.closest_point(P2(0, 5)).approx(P2(10, 5))
+    assert vert.closest_point(P2(10, 5)).approx(P2(10, 5))
