@@ -58,7 +58,7 @@ cdef class Line:
         return c.line_contains_point(self.data, point.data)
 
     def intersect(Line self, Line other not None) -> P2:
-        cdef V2 ret = V2.__new__(V2)
+        cdef P2 ret = P2.__new__(P2)
         if not c.line_line_intersect(ret.data, self.data, other.data):
             return None
         return ret

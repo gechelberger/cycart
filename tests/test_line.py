@@ -105,3 +105,19 @@ def test_degenerate_xy_of_cases():
     assert horz.x_of_y(1) is None
     assert horz.x_of_y(-100) is None
     assert horz.x_of_y(100) is None
+
+
+def test_intersection():
+    horz = Line.ByPoints(P2(-1, 10), P2(1, 10))
+    vert = Line.ByPoints(P2(10, -1), P2(10, 1))
+
+    assert horz.intersect(vert).approx(P2(10, 10))
+
+    assert horz.intersect(horz) is None
+    assert horz.intersect(Line.ByPoints(P2(-1, 0), P2(1, 0))) is None
+
+    l45 = Line.ByPoints(P2(0, 0), P2(1, 1))
+    assert horz.intersect(l45).approx(P2(10, 10))
+
+    l135 = Line.ByPoints(P2(0, 0), P2(-1, 1))
+    assert horz.intersect(l135).approx(P2(-10, 10))
