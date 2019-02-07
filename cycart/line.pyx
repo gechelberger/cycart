@@ -8,7 +8,7 @@ cdef class Line:
     @staticmethod
     def ByPoints(P2 p1, P2 p2):
         cdef Line ret = Line.__new__(Line)
-        if not c.line_by_points(ret.data, p2.data, p2.data):
+        if not c.line_by_points(ret.data, p1.data, p2.data): #P!
             raise ValueError("Can not construct line on (%s, %s)." % (p1, p2))
         return ret
 
@@ -63,11 +63,17 @@ cdef class Line:
             return None
         return ret
 
-    def x_of(Line self, double y) -> double:
-        pass
+    def x_of_y(Line self, double y) -> double:
+        cdef double x
+        if not c.line_x_of(x, self.data, y):
+            return None
+        return x
 
-    def y_of(Line self, double x) -> double:
-        pass
+    def y_of_x(Line self, double x) -> double:
+        cdef double y
+        if not c.line_y_of(y, self.data, x):
+            return None
+        return y
 
     def normal(Line self) -> V2:
         cdef V2 ret = V2.__new__(V2)

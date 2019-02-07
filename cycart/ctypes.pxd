@@ -169,9 +169,9 @@ cdef inline bint line_normalize(LineData& out):
     return normalize_coefficients(<double*>(&out), sizeof(LineData) / sizeof(double))
 
 cdef inline bint line_by_points(LineData& out, const C2Data& p1, const C2Data& p2):
-    out.a = p1.y - p2.y
-    out.b = p2.x - p1.x
-    out.c = out.a * p1.y - out.b - p1.x
+    out.a = p1.y - p2.y # -dy
+    out.b = p2.x - p1.x # dx
+    out.c = out.b * p1.y + out.a * p1.x
     return normalize_coefficients(<double*>&out, 3)
 
 cdef inline bint line_translate(LineData& out, const LineData& line, const C2Data& vec):
@@ -224,6 +224,7 @@ cdef inline bint line_y_of(double& out, const LineData& line, double x):
     if line.b == 0:
         return 0
     (&out)[0] = (line.c - line.a * x) / line.b
+    return 1
 
 cdef inline double line_constant(const LineData& line, const C2Data& point):
     return line.a * point.x + line.b * point.y
