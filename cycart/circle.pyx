@@ -1,7 +1,7 @@
 cimport cycart.ctypes as c
 
-from cycart.vector cimport V2
-from cycart.vector import V2
+from cycart.space cimport V2, P2
+from cycart.space import V2, P2
 
 zero = V2(0, 0)
 
@@ -21,4 +21,6 @@ cdef class Circle:
     def diameter(self):
         return self.data.radius * 2
 
-    def __init__(Circle self, double radius, center)
+    def __init__(Circle self, double radius, P2 center=None):
+        self.data.radius = radius
+        self.data.center = center.data if center else c.C2Data(0, 0)
