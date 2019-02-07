@@ -1,33 +1,52 @@
-cimport cython
-cimport cycart.ctypes as c
+from cycart.native.space cimport (
+    _R2,
+    r2_mul,
+    r2_mul2,
+    r2_dot,
+    r2_cross,
+    r2_ref_div2,
+    r2_rotate,
+    r2_rotate_around,
+    r2_approx,
+    r2_ccw,
+    r2_ref_point_angle,
+)
 
 
 """
 
 """
 
-def _add(lhs not None, rhs not None):
+def _add(R2 lhs not None, R2 rhs not None):
+    lhs_type = type(lhs)
+    rhs_type = type(rhs)
+
+
+    if lhs_type is V2 and rhs_type is V2:
+        return py_v2_new(r2_add(lhs.data, rhs.data))
+    if lhs_type is P2 and rhs_type is V2:
+        return py_p2_new(r2_add(lhs.data, rhs.data))
+    if lhs_type is V2 and rhs_type is P2:
+        return py_p2_new(r2_add(lhs.data, rhs.data))
+    raise TypeError(
+        "Expected Types: V2 or P2. Got: %s, %s"
+        % (lhs_type.__name__, rhs_type.__name__)
+    )
+
+
+def _sub(R2 lhs not None, R2 rhs not None):
     lhs_type = type(lhs)
     rhs_type = type(rhs)
     if lhs_type is V2 and rhs_type is V2:
-        return v2_v2_add(lhs, rhs)
+        return py_v2_new(r2_sub(lhs.data, rhs.data))
     if lhs_type is P2 and rhs_type is V2:
-        return p2_v2_add(lhs, rhs)
+        return py_p2_new(r2_sub(lhs.data, rhs.data))
     if lhs_type is V2 and rhs_type is P2:
-        return p2_v2_add(rhs, lhs)
-    raise TypeError("Expected Types: V2 or P2. Got: %s, %s" % (lhs_type.__name__, rhs_type.__name__))
-
-
-def _sub(lhs not None, rhs not None):
-    lhs_type = type(lhs)
-    rhs_type = type(rhs)
-    if lhs_type is V2 and rhs_type is V2:
-        return v2_v2_sub(lhs, rhs)
-    if lhs_type is P2 and rhs_type is V2:
-        return p2_v2_sub(lhs, rhs)
-    if lhs_type is V2 and rhs_type is P2:
-        return v2_p2_sub(lhs, rhs)
-    raise TypeError()
+        return py_p2_new(r2_sub(lhs.data, rhs.data))
+    raise TypeError(
+        "Expected Types: V2 or P2. Got: %s, %s"
+        % (lhs_type.__name__, rhs_type.__name__)
+    )
 
 """
 
@@ -57,28 +76,30 @@ cdef class V2:
     """
 
     def __add__(lhs, rhs):
-        return _add(lhs, rhs)
+        if isinstance(lhs, R2) and isinstance(rhs, R2):
+            return _add(lhs, rhs)
+        return NotImplemented
 
     def __sub__(lhs, rhs):
-        return _sub(lhs, rhs)
+        if isinstance(lhs, R2) and isinstance(rhs, R2):
+            return _sub(lhs, rhs)
+        return NotImplemented
 
     def __mul__(lhs not None, rhs not None):
-        cdef V2 ret = V2.__new__(V2)
-        cdef c.C2Data rhs_data
+        cdef _R2 lhs_data, rhs_data
 
-        if not v2_coerce(ret.data, lhs):
+        if not v2_coerce(lhs_data, lhs):
             raise TypeError("Expected V2 and number")
         if not v2_coerce(rhs_data, rhs):
             raise TypeError("Expected V2 and number")
         if type(lhs) == type(rhs):
             raise TypeError("Expected V2 and number")
-        if not c.c2_mul_vector(ret.data, ret.data, rhs_data):
-            raise RuntimeError("unknown error")
-        return ret
+
+        return py_v2_new(r2_mul2(lhs_data, rhs_data))
 
     def __truediv__(lhs, rhs):
         cdef V2 ret = V2.__new__(V2)
-        cdef c.C2Data rhs_data
+        cdef _R2 rhs_data
 
         if not v2_coerce(ret.data, lhs):
             raise TypeError("Expected V2 and number")
@@ -86,31 +107,28 @@ cdef class V2:
             raise TypeError("Expected V2 and number")
         if type(lhs) == type(rhs):
             raise TypeError("Expected V2 and number")
-        if not c.c2_div_vector(ret.data, ret.data, rhs_data):
+
+        if not r2_ref_div2(ret.data, ret.data, rhs_data):
             raise ZeroDivisionError()
         return ret
 
     def dot(V2 lhs, V2 rhs not None):
-        return c.c2_dot_vector(lhs.data, rhs.data)
+        return r2_dot(lhs.data, rhs.data)
 
     def cross(V2 lhs, V2 rhs not None):
-        return c.c2_cross_vector(lhs.data, rhs.data)
+        return r2_cross(lhs.data, rhs.data)
 
 
     def scaled(V2 self, double ratio):
-        cdef V2 ret = V2.__new__(V2)
-        if not c.c2_mul_scalar(ret.data, self.data, ratio):
-            raise RuntimeError("unknown error")
-        return ret
+        return py_v2_new(r2_mul(self.data, ratio))
 
     def rotated(V2 self, double radians):
         cdef V2 ret = V2.__new__(V2)
-        if not c.c2_rotate_vector(ret.data, self.data, radians):
-            raise RuntimeError("unknown error")
+        ret.data = r2_rotate(self.data, radians)
         return ret
 
     def approx(V2 self, V2 other not None, double rtol=1e-9, double atol=0):
-        return c.c2_approx(self.data, other.data, rtol, atol)
+        return r2_approx(self.data, other.data, rtol, atol)
 
     def __eq__(lhs, rhs):
         if isinstance(lhs, V2) and isinstance(rhs, V2):
@@ -120,16 +138,17 @@ cdef class V2:
     def __repr__(V2 self):
         return 'V2(%f, %f)' % (self.data.x, self.data.y)
 
-cdef class P2:
+
+cdef class P2(R2):
 
     @staticmethod
     def CCW(P2 p1 not None, P2 p2 not None, P2 p3 not None):
-        return c.c2_ccw(p1.data, p2.data, p3.data)
+        return r2_ccw(p1.data, p2.data, p3.data)
 
     @staticmethod
     def Angle(P2 p1 not None, P2 p2 not None, P2 p3 not None):
         cdef double ret
-        if not c.c2_points_acute_angle(ret, p1.data, p2.data, p3.data):
+        if not r2_ref_point_angle(ret, p1.data, p2.data, p3.data):
             raise ZeroDivisionError()
         return ret
 
@@ -146,53 +165,50 @@ cdef class P2:
         self.data.y = y
 
     cpdef V2 vector(P2 self):
-        cdef V2 ret = V2.__new__(V2)
-        ret.data = self.data
-        return ret
+        return py_v2_new(self.data)
 
-    def rotate(P2 self, double radians, P2 other=None):
-        cdef P2 ret = P2.__new__(P2)
-        cdef c.C2Data center = c.C2Data(0, 0) if other is None else other.data
-        if not c.c2_rotate_around(ret.data, center, self.data, radians):
-            raise RuntimeError("unknown error")
-        return ret
+    def rotate(P2 self, double radians, P2 center=None):
+        cdef _R2 _center = _R2(0, 0) if center is None else center.data
+        return py_p2_new(r2_rotate_around(self.data, _center, radians))
 
     def __add__(lhs, rhs):
-        return _add(lhs, rhs)
+        if isinstance(lhs, R2) and isinstance(rhs, R2):
+            return _add(lhs, rhs)
+        return NotImplemented
 
     def __sub__(lhs, rhs):
-        return _sub(lhs, rhs)
+        if isinstance(lhs, R2) and isinstance(rhs, R2):
+            return _sub(lhs, rhs)
+        return NotImplemented
 
     def __truediv__(lhs not None, rhs not None):
-        cdef P2 ret = P2.__new__(P2)
-        cdef c.C2Data rhs_data
+        cdef _R2 r2_lhs, r2_rhs
 
-        if not p2_coerce(ret.data, lhs):
+        if not p2_coerce(r2_lhs, lhs):
             raise TypeError("Expected P2 and double")
-        if not p2_coerce(rhs_data, rhs):
+        if not p2_coerce(r2_rhs, rhs):
             raise TypeError("Expected P2 and double")
         if type(lhs) == type(rhs):
             raise TypeError("Expected P2 and double")
-        if not c.c2_div_vector(ret.data, ret.data, rhs_data):
+
+        cdef P2 ret = P2.__new__(P2)
+        if not r2_ref_div2(ret.data, r2_lhs, r2_rhs):
             raise ZeroDivisionError()
         return ret
 
     def __mul__(lhs not None, rhs not None):
-        cdef P2 ret = P2.__new__(P2)
-        cdef c.C2Data rhs_data
+        cdef _R2 r2_lhs, r2_rhs
 
-        if not p2_coerce(ret.data, lhs):
+        if not p2_coerce(r2_lhs, lhs):
             raise TypeError("Expected V2 and number")
-        if not p2_coerce(rhs_data, rhs):
+        if not p2_coerce(r2_rhs, rhs):
             raise TypeError("Expected V2 and number")
         if type(lhs) == type(rhs):
             raise TypeError("Expected V2 and number")
-        if not c.c2_mul_vector(ret.data, ret.data, rhs_data):
-            raise RuntimeError("unknown error")
-        return ret
+        return py_p2_new(r2_mul2(r2_lhs, r2_rhs))
 
-    def approx(P2 self, P2 other not None):
-        return c.c2_approx(self.data, other.data)
+    def approx(P2 self, P2 other not None, double rtol=1e-9, double atol=0):
+        return r2_approx(self.data, other.data, rtol, atol)
 
     def __eq__(lhs, rhs):
         if isinstance(lhs, P2) and isinstance(rhs, P2):

@@ -1,8 +1,9 @@
-cimport cycart.ctypes as c
+from cycart.native.line cimport _Line
 
 cdef class Line:
-    cdef c.LineData data
+    cdef _Line data
 
-cdef class LineSegment:
-    cdef c.LineSegmentData data
-
+cdef inline Line py_line_new(_Line data):
+    cdef Line line = Line.__new__(Line)
+    line.data = data
+    return line

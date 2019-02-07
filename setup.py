@@ -16,7 +16,16 @@ def make_sources(*module_names):
         for module_name in module_names
     }
 
-sources = make_sources('space', 'line')
+sources = make_sources(
+    'space',
+    'line',
+    'segment',
+    'circle',
+    #'does_intersect',
+    #'intersect',
+    #'polygon',
+    #'rasterize',
+)
 
 extensions = [
     Extension(
@@ -33,7 +42,7 @@ CMDCLASS = {}
 if use_cython:
     CMDCLASS['build_ext'] = build_ext
 
-INSTALL_REQUIRES = []
+INSTALL_REQUIRES = ["multipledispatch"]
 
 TEST_LIBS = ["pytest"]
 DEV_LIBS = ["cython", "tox"]

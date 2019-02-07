@@ -2,6 +2,7 @@ import pytest
 
 from cycart import Line, P2, V2
 
+
 def test_create():
 
     line = Line(5, 5, 0)
@@ -13,7 +14,6 @@ def test_create():
     with pytest.raises(ValueError):
         Line(0, 0, 0)
 
-@pytest.mark.skip()
 def test_temporary_bug_in_line_coefficients():
 
     with pytest.raises(ValueError):
@@ -67,53 +67,54 @@ def test_create_from_points():
 def test_xy_of():
     l = Line(-1, 1, 0)
 
-    assert l.y_of_x(1) == pytest.approx(1)
-    assert l.y_of_x(-1) == pytest.approx(-1)
-    assert l.x_of_y(1) == pytest.approx(1)
-    assert l.x_of_y(-1) == pytest.approx(-1)
+    assert l.f_of_x(1) == pytest.approx(1)
+    assert l.f_of_x(-1) == pytest.approx(-1)
+    assert l.f_of_y(1) == pytest.approx(1)
+    assert l.f_of_y(-1) == pytest.approx(-1)
 
-    assert l.y_of_x(25) == pytest.approx(25)
-    assert l.y_of_x(-25) == pytest.approx(-25)
-    assert l.x_of_y(25) == pytest.approx(25)
-    assert l.x_of_y(-25) == pytest.approx(-25)
+    assert l.f_of_x(25) == pytest.approx(25)
+    assert l.f_of_x(-25) == pytest.approx(-25)
+    assert l.f_of_y(25) == pytest.approx(25)
+    assert l.f_of_y(-25) == pytest.approx(-25)
 
     l = Line(1, 1, 0)
 
-    assert l.y_of_x(1) == pytest.approx(-1)
-    assert l.y_of_x(-1) == pytest.approx(1)
-    assert l.x_of_y(1) == pytest.approx(-1)
-    assert l.x_of_y(-1) == pytest.approx(1)
+    assert l.f_of_x(1) == pytest.approx(-1)
+    assert l.f_of_x(-1) == pytest.approx(1)
+    assert l.f_of_y(1) == pytest.approx(-1)
+    assert l.f_of_y(-1) == pytest.approx(1)
 
-    assert l.y_of_x(25) == pytest.approx(-25)
-    assert l.y_of_x(-25) == pytest.approx(25)
-    assert l.x_of_y(25) == pytest.approx(-25)
-    assert l.x_of_y(-25) == pytest.approx(25)
+    assert l.f_of_x(25) == pytest.approx(-25)
+    assert l.f_of_x(-25) == pytest.approx(25)
+    assert l.f_of_y(25) == pytest.approx(-25)
+    assert l.f_of_y(-25) == pytest.approx(25)
 
 
 
 def test_degenerate_xy_of_cases():
     vert = Line.ByPoints(P2(1, 1), P2(1, -1))
 
-    assert vert.y_of_x(1) is None
-    assert vert.y_of_x(-100) is None
-    assert vert.x_of_y(-1) == pytest.approx(1)
-    assert vert.x_of_y(1) == pytest.approx(1)
-    assert vert.x_of_y(-100) == pytest.approx(1)
-    assert vert.x_of_y(100) == pytest.approx(1)
+    assert vert.f_of_x(1) is None
+    assert vert.f_of_x(-100) is None
+    assert vert.f_of_y(-1) == pytest.approx(1)
+    assert vert.f_of_y(1) == pytest.approx(1)
+    assert vert.f_of_y(-100) == pytest.approx(1)
+    assert vert.f_of_y(100) == pytest.approx(1)
 
     horz = Line.ByPoints(P2(-1, 0), P2(1, 0))
 
-    assert horz.y_of_x(-1) == pytest.approx(0)
-    assert horz.y_of_x(1) == pytest.approx(0)
-    assert horz.y_of_x(-100) == pytest.approx(0)
-    assert horz.y_of_x(100) == pytest.approx(0)
+    assert horz.f_of_x(-1) == pytest.approx(0)
+    assert horz.f_of_x(1) == pytest.approx(0)
+    assert horz.f_of_x(-100) == pytest.approx(0)
+    assert horz.f_of_x(100) == pytest.approx(0)
 
-    assert horz.x_of_y(-1) is None
-    assert horz.x_of_y(1) is None
-    assert horz.x_of_y(-100) is None
-    assert horz.x_of_y(100) is None
+    assert horz.f_of_y(-1) is None
+    assert horz.f_of_y(1) is None
+    assert horz.f_of_y(-100) is None
+    assert horz.f_of_y(100) is None
 
 
+@pytest.mark.skip()
 def test_intersection2():
 
     l1 = Line(1, 1, 0)
@@ -129,6 +130,7 @@ def test_intersection2():
     with pytest.raises(TypeError):
         l1.intersect(None)
 
+@pytest.mark.skip()
 def test_intersection():
     horz = Line.ByPoints(P2(-1, 10), P2(1, 10))
     vert = Line.ByPoints(P2(10, -1), P2(10, 1))
@@ -159,24 +161,24 @@ def test_closest_point():
 
 def test_translate():
     line = Line(2, 1, 2)
-    assert line.y_of_x(0) == pytest.approx(2)
-    assert line.x_of_y(0) == pytest.approx(1)
+    assert line.f_of_x(0) == pytest.approx(2)
+    assert line.f_of_y(0) == pytest.approx(1)
 
     translated = line.translate(V2(1, 1))
-    assert translated.y_of_x(0) == pytest.approx(3)
-    assert translated.x_of_y(0) == pytest.approx(2)
+    assert translated.f_of_x(0) == pytest.approx(3)
+    assert translated.f_of_y(0) == pytest.approx(2)
 
     horz = Line.ByPoints(P2(-1, 10), P2(1, 10))
-    assert horz.y_of_x(0) == pytest.approx(10)
+    assert horz.f_of_x(0) == pytest.approx(10)
 
     translated = horz.translate(V2(1, 1))
-    assert translated.y_of_x(0) == pytest.approx(11)
+    assert translated.f_of_x(0) == pytest.approx(11)
 
     vert = Line.ByPoints(P2(10, -1), P2(10, 1))
-    assert vert.x_of_y(0) == pytest.approx(10)
+    assert vert.f_of_y(0) == pytest.approx(10)
 
     translated = vert.translate(V2(1, 1))
-    assert translated.x_of_y(0) == pytest.approx(11)
+    assert translated.f_of_y(0) == pytest.approx(11)
 
 
 
