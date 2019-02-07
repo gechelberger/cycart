@@ -112,6 +112,11 @@ cdef class V2:
     def approx(V2 self, V2 other not None, double rtol=1e-9, double atol=0):
         return c.c2_approx(self.data, other.data, rtol, atol)
 
+    def __eq__(lhs, rhs):
+        if isinstance(lhs, V2) and isinstance(rhs, V2):
+            return lhs.approx(rhs)
+        return NotImplemented
+
     def __repr__(V2 self):
         return 'V2(%f, %f)' % (self.data.x, self.data.y)
 
@@ -188,6 +193,11 @@ cdef class P2:
 
     def approx(P2 self, P2 other not None):
         return c.c2_approx(self.data, other.data)
+
+    def __eq__(lhs, rhs):
+        if isinstance(lhs, P2) and isinstance(rhs, P2):
+            return lhs.approx(rhs)
+        return NotImplemented
 
     def __repr__(P2 self):
         return 'P2(%f, %f)' % (self.data.x, self.data.y)

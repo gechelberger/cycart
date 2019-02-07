@@ -46,3 +46,12 @@ def test_p2_rotate():
 
     with pytest.raises(TypeError):
         point.rotate(None)
+
+def test_p2_eq():
+    assert P2(0, 0) == P2(0, 0)
+
+    assert P2(0, 0) != V2(0, 0)
+
+    assert P2(0, 0) != None
+
+    assert None != P2(0, 0)

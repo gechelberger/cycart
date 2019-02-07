@@ -123,6 +123,8 @@ cdef class LineSegment:
         return ret
 
     def __init__(LineSegment self, P2 p1, P2 p2):
+        if p1 == p2:
+            raise ValueError("LineSegment endpoints must be distinct.")
         self.data.p1 = p1.data
         self.data.p2 = p2.data
 
