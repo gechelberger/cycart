@@ -155,3 +155,34 @@ def test_translate():
 
     translated = vert.translate(V2(1, 1))
     assert translated.x_of_y(0) == pytest.approx(11)
+
+
+
+def test_parallel_y():
+    line = Line.ByPoints(P2(0, 0), P2(1, 0))
+
+    up_one = line.parallel(P2(1, 1))
+
+    assert up_one == line.parallel(P2(0, 1))
+
+    assert up_one.a == 0
+    assert up_one.b == 1
+    assert up_one.c == 1
+
+def test_parallel_x():
+    line = Line.ByPoints(P2(0, 0), P2(0, 1))
+
+    over_one = line.parallel(P2(1, 0))
+
+    assert over_one.a == 1
+    assert over_one.b == 0
+    assert over_one.c == 1
+
+def test_parallel_xy():
+    line = Line(1, 1, 0)
+
+    up_and_over = line.parallel(P2(1, 1))
+
+    assert up_and_over.a == 0.5
+    assert up_and_over.b == 0.5
+    assert up_and_over.c == 1
