@@ -21,3 +21,22 @@ def test_eq():
 
     assert ls1 != None
     assert None != ls1
+
+
+def test_line_segment_vector():
+    ls = LineSegment(P2(0, 0), P2(10, 10))
+    assert V2(10, 10) == ls.vector()
+
+    ls = LineSegment(P2(10, 10), P2(0, 0))
+    assert V2(-10, -10) == ls.vector()
+
+
+def test_line_segment_length():
+    ls = LineSegment(P2(0, 0), P2(10, 0))
+    assert 10 == ls.length()
+
+    ls = LineSegment(P2(0, 0), P2(0, 10))
+    assert 10 == ls.length()
+
+    ls = LineSegment(P2(-10, -10), P2(10, 10))
+    assert 800 ** 0.5 == ls.length()

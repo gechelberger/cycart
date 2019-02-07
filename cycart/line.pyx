@@ -128,20 +128,29 @@ cdef class LineSegment:
         self.data.p1 = p1.data
         self.data.p2 = p2.data
 
-    def vector(LineSegment self):
-        pass
+    def vector(LineSegment self) -> V2:
+        cdef V2 ret = V2.__new__(V2)
+        if not c.segment_vector(ret.data, self.data):
+            raise RuntimeError("unknown error")
+        return ret
 
-    def center(LineSegment self):
-        pass
+    def center(LineSegment self) -> P2:
+        cdef P2 ret = P2.__new__(P2)
+        if not c.segment_center(ret.data, self.data):
+            raise RuntimeError("unknown error")
+        return ret
 
-    def intersect(LineSegment self, LineSegment other not None):
-        pass
+    def intersect(LineSegment self, LineSegment other not None) -> P2:
+        cdef P2 ret = P2.__new__(P2)
+        if c.segment_segment_intersect(ret.data, self.data, other.data):
+            return None
+        return ret
 
     def length(LineSegment self):
-        pass
+        return c.segment_length(self.data)
 
     def contains(LineSegment self, P2 point, double rtol=1e-9, atol=0):
-        pass
+        return c.segment_contains(self.data, point.data, rtol, atol)
 
     def __contains__(LineSegment self, P2 point):
         return self.contains(point)
