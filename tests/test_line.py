@@ -186,3 +186,21 @@ def test_parallel_xy():
     assert up_and_over.a == 0.5
     assert up_and_over.b == 0.5
     assert up_and_over.c == 1
+
+def test_contains():
+
+    line = Line(1, 1, 0)
+
+    assert line.contains(P2(0, 0))
+    assert line.contains(P2(-1, 1))
+    assert line.contains(P2(1, -1))
+
+    assert P2(0, 0) in line
+
+    assert not line.contains(P2(0, 1))
+
+    with pytest.raises(TypeError):
+        line.contains(V2(0, 0))
+
+    with pytest.raises(TypeError):
+        line.contains(None)

@@ -54,6 +54,9 @@ cdef class Line:
         c.line_closest_point(ret.data, self.data, point.data)
         return ret
 
+    def contains(Line self, P2 point not None, double rtol=1e-9, double atol=0):
+        return c.line_contains_point(self.data, point.data, rtol, atol)
+
     def __contains__(Line self, P2 point not None) -> bool:
         return c.line_contains_point(self.data, point.data)
 
