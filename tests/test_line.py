@@ -27,6 +27,13 @@ def test_line_equality():
     assert line != Line(1, 1, 0)
     assert line != None
 
+def test_line_points():
+
+    line = Line(1, -1, 0)
+
+    assert P2(25, 25) == line.point(x=25)
+    assert P2(25, 25) == line.point(y=25)
+
 def test_create_from_points():
     l = Line.ByPoints(P2(-1, -1), P2(1, 1))
 

@@ -83,7 +83,18 @@ cdef class Line:
 
     def point(Line self, x=None, y=None) -> P2:
         cdef P2 ret = P2.__new__(P2)
-        raise NotImplementedError()
+        if isinstance(x, (float, int)):
+            if c.line_y_of(ret.data.y, self.data, x):
+                ret.data.x = x
+                return ret
+
+        if isinstance(y, (float, int)):
+            if c.line_x_of(ret.data.x, self.data, y):
+                ret.data.y = y
+                return ret
+
+        raise ValueError("Can't create point from x or y", x, y)
+
 
     def normal(Line self) -> V2:
         cdef V2 ret = V2.__new__(V2)
