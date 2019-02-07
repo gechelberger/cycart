@@ -24,42 +24,64 @@ cdef class Line:
     def c(self):
         return self.data.c
 
-    def __init__(Line self, double a, double b, double c):
-        self.data.a = a
-        self.data.b = b
-        self.data.c = c
-        if not c.normalize_coefficients(<double*>&self.data, 3):
-            raise ValueError("Invalid Line: %f x + %f y = %f" % (a, b, c))
+    def __init__(Line self, double ca, double cb, double cc):
+        self.data.a = ca
+        self.data.b = cb
+        self.data.c = cc
+        if not c.line_normalize(self.data):
+            raise ValueError("Invalid Line: %f x + %f y = %f" % (float(ca), float(cb), float(cc)))
 
-    cpdef Line translate(Line self, V2 displacement):
+    def translate(Line self, V2 displacement not None) -> Line:
+        cdef Line ret = Line.__new__(Line)
+        if not c.line_translate(ret.data, self.data, displacement.data):
+            raise RuntimeError("Could not translate line... shouldn't happen")
+        return ret
+
+    def perpendicular(Line self, P2 point not None) -> Line:
+        cdef Line ret = Line.__new__(Line)
+        if not c.line_perpendicular(ret.data, self.data, point.data):
+            raise ValueError("Could not find perpendicular line.")
+        return ret
+
+    def parallel(Line self, P2 point not None) -> Line:
+        cdef Line ret = Line.__new__(Line)
+        if not c.line_parallel(ret.data, self.data, point.data):
+            raise RuntimeError("Could not find parallel line... shouldn't happen.")
+        return ret
+
+    def closest_point(Line self, P2 point not None) -> P2:
+        cdef P2 ret = P2.__new__(P2)
+        c.line_closest_point(ret.data, self.data, point.data)
+        return ret
+
+    def __contains__(Line self, P2 point not None) -> bool:
+        return c.line_contains_point(self.data, point.data)
+
+    def intersect(Line self, Line other not None) -> P2:
+        cdef V2 ret = V2.__new__(V2)
+        if not c.line_line_intersect(ret.data, self.data, other.data):
+            return None
+        return ret
+
+    def x_of(Line self, double y) -> double:
         pass
 
-    cpdef Line perpendicular(Line self, P2 point):
+    def y_of(Line self, double x) -> double:
         pass
 
-    cpdef Line parallel(Line self, P2 point):
-        pass
+    def normal(Line self) -> V2:
+        cdef V2 ret = V2.__new__(V2)
+        if not c.line_normal(ret.data, self.data):
+            raise RuntimeError("unknown error")
+        return ret
 
-    cpdef P2 closest_point(Line self, P2 point):
-        pass
+    def __eq__(lhs, rhs):
+        if isinstance(lhs, Line) and isinstance(rhs, Line):
+            return lhs.approx(rhs)
+        return NotImplemented
 
-    def __contains__(Line self, P2 point not None):
-        pass
-
-    def intersect(Line self, Line other not None):
-        pass
-
-    def x_of(Line self, double y):
-        pass
-
-    def y_of(Line self, double x):
-        pass
-
-    def normal(Line self):
-        pass
-
-    def __eq__(Line lhs not None, Line rhs not None):
-        pass
+    def approx(Line lhs not None, Line rhs not None) -> bool:
+        return c.line_eq(lhs.data, rhs.data)
 
 cdef class LineSegment:
 

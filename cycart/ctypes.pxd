@@ -165,6 +165,9 @@ cdef inline int c2_cmp_points(const C2Data& lhs, const C2Data& rhs):
 LineData Functions
 """
 
+cdef inline bint line_normalize(LineData& out):
+    return normalize_coefficients(<double*>(&out), sizeof(LineData) / sizeof(double))
+
 cdef inline bint line_by_points(LineData& out, const C2Data& p1, const C2Data& p2):
     out.a = p1.y - p2.y
     out.b = p2.x - p1.x
