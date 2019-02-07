@@ -146,7 +146,12 @@ cdef class LineSegment:
     def __contains__(LineSegment self, P2 point):
         return self.contains(point)
 
-    def __eq__(LineSegment lhs not None, LineSegment rhs not None):
-        pass
+    def approx(LineSegment lhs, LineSegment rhs not None, double rtol=1e-9, atol=0):
+        return c.segment_eq(lhs.data, rhs.data, rtol, atol)
+
+    def __eq__(lhs, rhs):
+        if isinstance(lhs, LineSegment) and isinstance(rhs, LineSegment):
+            return lhs.approx(rhs)
+        return NotImplemented
 
 
