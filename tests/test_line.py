@@ -1,6 +1,6 @@
 import pytest
 
-from cycart import Line, P2
+from cycart import Line, P2, V2
 
 def test_create():
 
@@ -133,3 +133,25 @@ def test_closest_point():
 
     assert vert.closest_point(P2(0, 5)).approx(P2(10, 5))
     assert vert.closest_point(P2(10, 5)).approx(P2(10, 5))
+
+
+def test_translate():
+    line = Line(2, 1, 2)
+    assert line.y_of_x(0) == pytest.approx(2)
+    assert line.x_of_y(0) == pytest.approx(1)
+
+    translated = line.translate(V2(1, 1))
+    assert translated.y_of_x(0) == pytest.approx(3)
+    assert translated.x_of_y(0) == pytest.approx(2)
+
+    horz = Line.ByPoints(P2(-1, 10), P2(1, 10))
+    assert horz.y_of_x(0) == pytest.approx(10)
+
+    translated = horz.translate(V2(1, 1))
+    assert translated.y_of_x(0) == pytest.approx(11)
+
+    vert = Line.ByPoints(P2(10, -1), P2(10, 1))
+    assert vert.x_of_y(0) == pytest.approx(10)
+
+    translated = vert.translate(V2(1, 1))
+    assert translated.x_of_y(0) == pytest.approx(11)
