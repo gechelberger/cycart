@@ -114,6 +114,10 @@ def test_line_segment_does_intersect():
 
     assert not ls.does_intersect(LineSegment(P2(4, 5), P2(0, 10)))
 
+    assert ls.does_intersect(LineSegment(P2(10, 10), P2(20, 20)))
+
+    assert ls.does_intersect(LineSegment(P2(0, 0), P2(10, 10)))
+
 
 def test_intersect():
     ls = LineSegment(P2(0, 0), P2(10, 10))
@@ -134,5 +138,3 @@ def test_intersect():
 
     assert None == ls.intersect(LineSegment(P2(4, 5), P2(0, 10)))
     assert None == ls.intersect(LineSegment(P2(5, 4), P2(10, 0)))
-
-    # todo: test endpoints
