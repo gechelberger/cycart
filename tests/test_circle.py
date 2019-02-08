@@ -16,6 +16,9 @@ def test_circle_create():
     assert circle.center == P2(100, 100)
 
     with pytest.raises(TypeError):
+        Circle(100, V2(100, 100))
+
+    with pytest.raises(TypeError):
         Circle(None)
 
 def test_circle_properties():
@@ -43,3 +46,26 @@ def test_circle_contains():
 
     with pytest.raises(TypeError):
         circle.contains(V2(0, 0))
+
+def test_offset_circle_contains():
+    circle = Circle(100, P2(2, 2))
+    assert circle.contains(P2(0, 0))
+    assert not circle.contains(P2(-99, 0))
+
+    assert P2(0, 0) in circle
+    assert P2(-99, 0) not in circle
+
+def test_on_perimeter():
+    circle = Circle(100)
+
+    assert not circle.on_circumference(P2(0, 0))
+
+    assert circle.on_circumference(P2(100, 0))
+    assert circle.on_circumference(P2(0, 100))
+
+    circle = Circle(100, P2(1, 1))
+    assert not circle.on_circumference(P2(0, 0))
+    assert circle.on_circumference(P2(1, -99))
+    assert circle.on_circumference(P2(-99, 1))
+    assert circle.on_circumference(P2(101, 1))
+    assert circle.on_circumference(P2(1, 101))
