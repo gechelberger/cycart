@@ -77,7 +77,7 @@ cdef inline IRES ls2_l2_does_intersect(const _LineSegment& seg, const _Line& lin
     return YES
 
 cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):
-    cdef lconst = fabs(l2_constant(circle.center))
+    cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
     return dist2 <= circle.radius ** 2
 

@@ -69,3 +69,11 @@ def test_on_perimeter():
     assert circle.on_circumference(P2(-99, 1))
     assert circle.on_circumference(P2(101, 1))
     assert circle.on_circumference(P2(1, 101))
+
+@pytest.mark.skip()
+def test_does_intersect():
+    pass
+
+@pytest.mark.skip()
+def test_intersect():
+    pass

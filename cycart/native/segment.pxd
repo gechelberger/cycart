@@ -44,7 +44,7 @@ cdef inline bint ls2_contains(const _LineSegment& segment, const _R2& point, dou
 
 cdef inline bint ls2_approx(const _LineSegment& lhs, const _LineSegment& rhs, double rtol=1e-9, atol=0):
     cdef _LineSegment norm1 = ls2_normalized(lhs)
-    cdef _LineSegment norm2 = ls2_normalized(lhs)
+    cdef _LineSegment norm2 = ls2_normalized(rhs)
     return r2_approx(norm1.p1, norm2.p1, rtol, atol) and r2_approx(norm1.p2, norm2.p2, rtol, atol)
 
 

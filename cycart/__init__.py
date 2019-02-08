@@ -2,6 +2,8 @@ from .space import V2, P2
 from .line import Line
 from .segment import LineSegment
 from .circle import Circle
+from .does_intersect import does_intersect
+
 
 __all__ = (
     "V2",
@@ -9,4 +11,5 @@ __all__ = (
     "Line",
     "LineSegment",
     "Circle",
+    "does_intersect"
 )

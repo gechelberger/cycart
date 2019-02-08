@@ -21,7 +21,7 @@ sources = make_sources(
     'line',
     'segment',
     'circle',
-    #'does_intersect',
+    'does_intersect',
     #'intersect',
     #'polygon',
     #'rasterize',
@@ -33,7 +33,8 @@ extensions = [
         sources=[source],
         language='c++',
         include_dirs=['cycart/'],
-        libraries=[]
+        libraries=[],
+        extra_compile_args=['-O3'],
     )
     for module_name, source in sources.items()
 ]
@@ -61,6 +62,7 @@ setup(
     packages=['cycart'],
     cmdclass=CMDCLASS,
     setup_requires=["wheel"],
+    install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRE,
     ext_modules=extensions,
     package_data={
