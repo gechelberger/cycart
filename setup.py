@@ -22,7 +22,7 @@ sources = make_sources(
     'segment',
     'circle',
     'does_intersect',
-    #'intersect',
+    'intersect',
     #'polygon',
     #'rasterize',
 )

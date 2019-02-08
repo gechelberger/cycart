@@ -1,4 +1,9 @@
+from libcpp.pair cimport pair
 
+#ctypedef pair[double, double] _I2
+
+#cdef inline _I2 rtoi(_R2 data):
+#    return _I2(data.x, data.y)
 
 cdef struct _R2:
     double x

@@ -8175,7 +8175,7 @@ static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __pyx_f_
  *         return NO
  *     return YES             # <<<<<<<<<<<<<<
  * 
- * from libc.math cimport sqrt
+ * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):
  */
   __pyx_r = __pyx_e_6cycart_6native_14does_intersect_YES;
   goto __pyx_L0;
@@ -8194,12 +8194,12 @@ static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __pyx_f_
   return __pyx_r;
 }
 
-/* "cycart/native/does_intersect.pxd":81
- * from libc.math cimport sqrt
+/* "cycart/native/does_intersect.pxd":79
+ *     return YES
  * 
  * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):             # <<<<<<<<<<<<<<
  *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
- *     #cdef dist = lconst / sqrt(line.a ** 2 + line.b ** 2)
+ *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
  */
 
 static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __pyx_f_6cycart_6native_14does_intersect_l2_c2_does_intersect(struct __pyx_t_6cycart_6native_6dtypes__Line const &__pyx_v_line, struct __pyx_t_6cycart_6native_6dtypes__Circle const &__pyx_v_circle) {
@@ -8213,58 +8213,58 @@ static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __pyx_f_
   enum __pyx_t_6cycart_6native_14does_intersect_IRES __pyx_t_4;
   __Pyx_RefNannySetupContext("l2_c2_does_intersect", 0);
 
-  /* "cycart/native/does_intersect.pxd":82
+  /* "cycart/native/does_intersect.pxd":80
  * 
  * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):
  *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)             # <<<<<<<<<<<<<<
- *     #cdef dist = lconst / sqrt(line.a ** 2 + line.b ** 2)
- *     #return dist <= circle.radius
+ *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
+ *     return dist2 <= circle.radius ** 2
  */
-  __pyx_t_1 = PyFloat_FromDouble(fabs((__pyx_f_6cycart_6native_4line_l2_constant(__pyx_v_line, __pyx_v_circle.center) - __pyx_v_line.c))); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 82, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(fabs((__pyx_f_6cycart_6native_4line_l2_constant(__pyx_v_line, __pyx_v_circle.center) - __pyx_v_line.c))); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_lconst = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cycart/native/does_intersect.pxd":86
- *     #return dist <= circle.radius
- * 
+  /* "cycart/native/does_intersect.pxd":81
+ * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):
+ *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
  *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)             # <<<<<<<<<<<<<<
  *     return dist2 <= circle.radius ** 2
  * 
  */
-  __pyx_t_1 = PyNumber_Power(__pyx_v_lconst, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 86, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_lconst, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(7, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyFloat_FromDouble((pow(((double)__pyx_v_line.a), 2.0) + pow(((double)__pyx_v_line.b), 2.0))); if (unlikely(!__pyx_t_2)) __PYX_ERR(7, 86, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble((pow(((double)__pyx_v_line.a), 2.0) + pow(((double)__pyx_v_line.b), 2.0))); if (unlikely(!__pyx_t_2)) __PYX_ERR(7, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 86, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_dist2 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "cycart/native/does_intersect.pxd":87
- * 
+  /* "cycart/native/does_intersect.pxd":82
+ *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
  *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
  *     return dist2 <= circle.radius ** 2             # <<<<<<<<<<<<<<
  * 
  * #todo: polygon
  */
-  __pyx_t_3 = PyFloat_FromDouble(pow(((double)__pyx_v_circle.radius), 2.0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 87, __pyx_L1_error)
+  __pyx_t_3 = PyFloat_FromDouble(pow(((double)__pyx_v_circle.radius), 2.0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(7, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_v_dist2, __pyx_t_3, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(7, 87, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_v_dist2, __pyx_t_3, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(7, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = ((enum __pyx_t_6cycart_6native_14does_intersect_IRES)__Pyx_PyInt_As_enum____pyx_t_6cycart_6native_14does_intersect_IRES(__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(7, 87, __pyx_L1_error)
+  __pyx_t_4 = ((enum __pyx_t_6cycart_6native_14does_intersect_IRES)__Pyx_PyInt_As_enum____pyx_t_6cycart_6native_14does_intersect_IRES(__pyx_t_2)); if (unlikely(PyErr_Occurred())) __PYX_ERR(7, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "cycart/native/does_intersect.pxd":81
- * from libc.math cimport sqrt
+  /* "cycart/native/does_intersect.pxd":79
+ *     return YES
  * 
  * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):             # <<<<<<<<<<<<<<
  *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
- *     #cdef dist = lconst / sqrt(line.a ** 2 + line.b ** 2)
+ *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
  */
 
   /* function exit code */
@@ -8557,6 +8557,9 @@ static int __Pyx_modinit_function_export_code(void) {
   if (__Pyx_ExportFunction("py_l2_l2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_l2_l2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_4line_Line *, struct __pyx_obj_6cycart_4line_Line *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("py_ls2_ls2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_ls2_ls2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_7segment_LineSegment *, struct __pyx_obj_6cycart_7segment_LineSegment *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("py_c2_c2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_c2_c2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_6circle_Circle *, struct __pyx_obj_6cycart_6circle_Circle *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("py_ls2_l2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_ls2_l2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_7segment_LineSegment *, struct __pyx_obj_6cycart_4line_Line *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("py_ls2_c2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_ls2_c2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_7segment_LineSegment *, struct __pyx_obj_6cycart_6circle_Circle *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("py_l2_c2_does_intersect", (void (*)(void))__pyx_f_6cycart_14does_intersect_py_l2_c2_does_intersect, "PyObject *(struct __pyx_obj_6cycart_4line_Line *, struct __pyx_obj_6cycart_6circle_Circle *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -9358,12 +9361,12 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_3) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "cycart/native/does_intersect.pxd":81
- * from libc.math cimport sqrt
+  /* "cycart/native/does_intersect.pxd":79
+ *     return YES
  * 
  * cdef inline IRES l2_c2_does_intersect(const _Line& line, const _Circle& circle):             # <<<<<<<<<<<<<<
  *     cdef lconst = fabs(l2_constant(line, circle.center) - line.c)
- *     #cdef dist = lconst / sqrt(line.a ** 2 + line.b ** 2)
+ *     cdef dist2 = lconst ** 2 / (line.a ** 2 + line.b ** 2)
  */
 
   /*--- Wrapped vars code ---*/

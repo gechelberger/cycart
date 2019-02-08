@@ -45,6 +45,7 @@ cdef inline _R2 l2_closest_point(const _Line& line, const _R2& point):
 cdef inline bint l2_contains_point(const _Line& line, const _R2& point, double rtol=1e-9, double atol=0):
     return fapprox(l2_constant(line, point), line.c, rtol, atol)
 
+
 """
 
 """
