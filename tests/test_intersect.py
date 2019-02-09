@@ -49,6 +49,32 @@ def test_line_segment_line_segment():
 
     assert set() == intersect(ls1, LineSegment(P2(0, 5), P2(5, 10)))
 
+def test_line_segment_line_segment_edge_cases():
+    ls1 = LineSegment(P2(0, 0), P2(10, 10))
+
+    assert {P2(0, 0)} == intersect(ls1, LineSegment(P2(-1, 1), P2(0, 0)))
+    assert {P2(10, 10)} == intersect(ls1, LineSegment(P2(10, 10), P2(10, 20)))
+
+    with pytest.raises(ValueError):
+        intersect(ls1, ls1)
+
+    with pytest.raises(ValueError):
+        intersect(ls1, LineSegment(P2(0,0), P2(5, 5)))
+
+    with pytest.raises(ValueError):
+        intersect(ls1, LineSegment(P2(5, 5), P2(10, 10)))
+
+    with pytest.raises(ValueError):
+        intersect(ls1, LineSegment(P2(4, 4), P2(6, 6)))
+
+    with pytest.raises(ValueError):
+        intersect(ls1, LineSegment(P2(-1, -1), P2(11, 11)))
+
+def test_ls2_ls2_colinear_edge_case():
+    ls1 = LineSegment(P2(0, 0), P2(10, 10))
+    assert {P2(10, 10)} == intersect(ls1, LineSegment(P2(10, 10), P2(15, 15)))
+    assert {P2(0, 0)} == intersect(ls1, LineSegment(P2(-5, -5), P2(0, 0)))
+
 
 def test_line_circle():
     circle = Circle(100, P2(1, 1))
