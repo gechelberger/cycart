@@ -8,11 +8,15 @@ except ImportError:
 else:
     use_cython = True
 
-package_name = 'cycart'
-def make_sources(*module_names):
+#todo: handle install if numpy not found
+import numpy as np
+
+library_name = 'cycart'
+def make_sources(*module_names, package_names=()):
     file_type = '.pyx' if use_cython else '.cpp'
     return {
-        package_name + '.' + module_name : package_name + "/" + module_name + file_type
+        '.'.join([library_name, *package_names, module_name]) :
+            '/'.join([library_name, *package_names, module_name + file_type])
         for module_name in module_names
     }
 
@@ -23,7 +27,7 @@ sources = make_sources(
     'circle',
     'does_intersect',
     'intersect',
-    #'polygon',
+    'polygon',
     #'rasterize',
 )
 
@@ -32,18 +36,28 @@ extensions = [
         module_name,
         sources=[source],
         language='c++',
-        include_dirs=['cycart/'],
+        include_dirs=['cycart/', np.get_include()],
         libraries=[],
         extra_compile_args=['-O3'],
     )
     for module_name, source in sources.items()
 ]
 
+extensions.append(
+    Extension(
+        'cycart.alg.convexhull',
+        sources=['cycart/alg/convexhull.pyx'],
+        language='c++',
+        include_dirs=[np.get_include()],
+        extra_compile_args=['-O3']
+    )
+)
+
 CMDCLASS = {}
 if use_cython:
     CMDCLASS['build_ext'] = build_ext
 
-INSTALL_REQUIRES = ["multipledispatch"]
+INSTALL_REQUIRES = ["multipledispatch", "numpy"]
 
 TEST_LIBS = ["pytest"]
 DEV_LIBS = ["cython", "tox"]
@@ -53,7 +67,7 @@ EXTRAS_REQUIRE = {
 }
 
 setup(
-    name=package_name,
+    name=library_name,
     author="Greg Echelberger",
     author_name="gechelberger@gmail.com",
     url="https://github.com/gechelberger/cycart",
@@ -61,12 +75,14 @@ setup(
     description="cython R2 euclidean geometry utility library",
     packages=['cycart'],
     cmdclass=CMDCLASS,
-    setup_requires=["wheel"],
+    setup_requires=["wheel", "numpy"],
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRE,
     ext_modules=extensions,
     package_data={
-        'cycart' : ['*.pyx', '*.pxd', '*.cpp']
+        'cycart' : ['*.pyx', '*.pxd', '*.cpp'],
+        'cycart.native' : ['*.pxd'],
+        'cycart.alg' : ['*.pyx', '*.pxd', '*.cpp']
     },
     zip_safe=False,
 )

@@ -4,7 +4,7 @@ from .segment import LineSegment
 from .circle import Circle
 from .does_intersect import does_intersect
 from .intersect import intersect
-
+from .polygon import Polygon
 
 __all__ = (
     "V2",
@@ -12,6 +12,7 @@ __all__ = (
     "Line",
     "LineSegment",
     "Circle",
+    "Polygon",
     "does_intersect",
     "intersect",
 )

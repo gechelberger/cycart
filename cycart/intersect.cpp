@@ -1432,16 +1432,6 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 
 struct __pyx_t_6cycart_6native_6dtypes__R2;
 static PyObject* __pyx_convert__to_py_struct____pyx_t_6cycart_6native_6dtypes__R2(struct __pyx_t_6cycart_6native_6dtypes__R2 s);
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* Print.proto */
-static int __Pyx_Print(PyObject*, PyObject *, int);
-#if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
-static PyObject* __pyx_print = 0;
-static PyObject* __pyx_print_kwargs = 0;
-#endif
-
 /* CppExceptionConversion.proto */
 #ifndef __Pyx_CppExn2PyErr
 #include <new>
@@ -1483,9 +1473,6 @@ static void __Pyx_CppExn2PyErr() {
   }
 }
 #endif
-
-/* PrintOne.proto */
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __Pyx_PyInt_As_enum____pyx_t_6cycart_6native_14does_intersect_IRES(PyObject *);
@@ -1628,17 +1615,14 @@ static const char __pyx_k_l2[] = "l2";
 static const char __pyx_k_p1[] = "p1";
 static const char __pyx_k_p2[] = "p2";
 static const char __pyx_k_add[] = "add";
-static const char __pyx_k_end[] = "end";
 static const char __pyx_k_ls1[] = "ls1";
 static const char __pyx_k_ls2[] = "ls2";
 static const char __pyx_k_seg[] = "seg";
 static const char __pyx_k_Line[] = "Line";
-static const char __pyx_k_file[] = "file";
 static const char __pyx_k_line[] = "line";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_print[] = "print";
 static const char __pyx_k_Circle[] = "Circle";
 static const char __pyx_k_center[] = "center";
 static const char __pyx_k_circle[] = "circle";
@@ -1676,8 +1660,6 @@ static PyObject *__pyx_kp_s_cycart_intersect_pyx;
 static PyObject *__pyx_n_s_cycart_line;
 static PyObject *__pyx_n_s_cycart_segment;
 static PyObject *__pyx_n_s_dispatcher;
-static PyObject *__pyx_n_s_end;
-static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_intersect;
 static PyObject *__pyx_n_s_l1;
@@ -1690,7 +1672,6 @@ static PyObject *__pyx_n_s_multipledispatch;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_p1;
 static PyObject *__pyx_n_s_p2;
-static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_radius;
 static PyObject *__pyx_n_s_seg;
@@ -6992,7 +6973,6 @@ static CYTHON_INLINE int __pyx_f_6cycart_6native_7segment_ls2_overlaps(struct __
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("ls2_overlaps", 0);
 
   /* "segment.pxd":55
@@ -7103,7 +7083,7 @@ static CYTHON_INLINE int __pyx_f_6cycart_6native_7segment_ls2_overlaps(struct __
  *     if ls2_contains_strict(cmp, ref.p2):
  *         count += 1             # <<<<<<<<<<<<<<
  * 
- *     print(count)
+ *     return count >= 2
  */
     __pyx_v_count = (__pyx_v_count + 1);
 
@@ -7118,18 +7098,6 @@ static CYTHON_INLINE int __pyx_f_6cycart_6native_7segment_ls2_overlaps(struct __
 
   /* "segment.pxd":65
  *         count += 1
- * 
- *     print(count)             # <<<<<<<<<<<<<<
- * 
- *     return count >= 2
- */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_count); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PrintOne(0, __pyx_t_2) < 0) __PYX_ERR(6, 65, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "segment.pxd":67
- *     print(count)
  * 
  *     return count >= 2             # <<<<<<<<<<<<<<
  * 
@@ -7147,16 +7115,12 @@ static CYTHON_INLINE int __pyx_f_6cycart_6native_7segment_ls2_overlaps(struct __
  */
 
   /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_WriteUnraisable("cycart.native.segment.ls2_overlaps", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
-  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "segment.pxd":69
+/* "segment.pxd":67
  *     return count >= 2
  * 
  * cdef inline _R2 ls2_vector(const _LineSegment& segment):             # <<<<<<<<<<<<<<
@@ -7169,7 +7133,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("ls2_vector", 0);
 
-  /* "segment.pxd":70
+  /* "segment.pxd":68
  * 
  * cdef inline _R2 ls2_vector(const _LineSegment& segment):
  *     return r2_sub(segment.p2, segment.p1)             # <<<<<<<<<<<<<<
@@ -7179,7 +7143,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   __pyx_r = __pyx_f_6cycart_6native_5space_r2_sub(__pyx_v_segment.p2, __pyx_v_segment.p1);
   goto __pyx_L0;
 
-  /* "segment.pxd":69
+  /* "segment.pxd":67
  *     return count >= 2
  * 
  * cdef inline _R2 ls2_vector(const _LineSegment& segment):             # <<<<<<<<<<<<<<
@@ -7193,7 +7157,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   return __pyx_r;
 }
 
-/* "segment.pxd":72
+/* "segment.pxd":70
  *     return r2_sub(segment.p2, segment.p1)
  * 
  * cdef inline _LineSegment ls2_translate(const _LineSegment& segment, const _R2 vector):             # <<<<<<<<<<<<<<
@@ -7207,7 +7171,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
   struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_t_1;
   __Pyx_RefNannySetupContext("ls2_translate", 0);
 
-  /* "segment.pxd":73
+  /* "segment.pxd":71
  * 
  * cdef inline _LineSegment ls2_translate(const _LineSegment& segment, const _R2 vector):
  *     return _LineSegment(r2_add(segment.p1, vector), r2_add(segment.p2, vector))             # <<<<<<<<<<<<<<
@@ -7219,7 +7183,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "segment.pxd":72
+  /* "segment.pxd":70
  *     return r2_sub(segment.p2, segment.p1)
  * 
  * cdef inline _LineSegment ls2_translate(const _LineSegment& segment, const _R2 vector):             # <<<<<<<<<<<<<<
@@ -7233,7 +7197,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
   return __pyx_r;
 }
 
-/* "segment.pxd":75
+/* "segment.pxd":73
  *     return _LineSegment(r2_add(segment.p1, vector), r2_add(segment.p2, vector))
  * 
  * cdef inline _R2 ls2_center(const _LineSegment& segment):             # <<<<<<<<<<<<<<
@@ -7248,7 +7212,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("ls2_center", 0);
 
-  /* "segment.pxd":76
+  /* "segment.pxd":74
  * 
  * cdef inline _R2 ls2_center(const _LineSegment& segment):
  *     cdef _R2 vector = ls2_vector(segment)             # <<<<<<<<<<<<<<
@@ -7257,7 +7221,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
  */
   __pyx_v_vector = __pyx_f_6cycart_6native_7segment_ls2_vector(__pyx_v_segment);
 
-  /* "segment.pxd":77
+  /* "segment.pxd":75
  * cdef inline _R2 ls2_center(const _LineSegment& segment):
  *     cdef _R2 vector = ls2_vector(segment)
  *     if not r2_ref_div(vector, vector, 2.0):             # <<<<<<<<<<<<<<
@@ -7268,7 +7232,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   if (__pyx_t_1) {
   }
 
-  /* "segment.pxd":79
+  /* "segment.pxd":77
  *     if not r2_ref_div(vector, vector, 2.0):
  *         pass #oops
  *     return r2_add(segment.p1, vector)             # <<<<<<<<<<<<<<
@@ -7278,7 +7242,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   __pyx_r = __pyx_f_6cycart_6native_5space_r2_add(__pyx_v_segment.p1, __pyx_v_vector);
   goto __pyx_L0;
 
-  /* "segment.pxd":75
+  /* "segment.pxd":73
  *     return _LineSegment(r2_add(segment.p1, vector), r2_add(segment.p2, vector))
  * 
  * cdef inline _R2 ls2_center(const _LineSegment& segment):             # <<<<<<<<<<<<<<
@@ -7292,7 +7256,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_
   return __pyx_r;
 }
 
-/* "segment.pxd":82
+/* "segment.pxd":80
  * 
  * 
  * cdef inline _LineSegment ls2_rotate(const _LineSegment& segment, const _R2 center, double radians):             # <<<<<<<<<<<<<<
@@ -7306,7 +7270,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
   struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_t_1;
   __Pyx_RefNannySetupContext("ls2_rotate", 0);
 
-  /* "segment.pxd":84
+  /* "segment.pxd":82
  * cdef inline _LineSegment ls2_rotate(const _LineSegment& segment, const _R2 center, double radians):
  *     return _LineSegment(
  *         r2_rotate_around(segment.p1, center, radians),             # <<<<<<<<<<<<<<
@@ -7315,7 +7279,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
  */
   __pyx_t_1.p1 = __pyx_f_6cycart_6native_5space_r2_rotate_around(__pyx_v_segment.p1, __pyx_v_center, __pyx_v_radians);
 
-  /* "segment.pxd":85
+  /* "segment.pxd":83
  *     return _LineSegment(
  *         r2_rotate_around(segment.p1, center, radians),
  *         r2_rotate_around(segment.p2, center, radians)             # <<<<<<<<<<<<<<
@@ -7325,7 +7289,7 @@ static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__LineSegment __pyx_f
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "segment.pxd":82
+  /* "segment.pxd":80
  * 
  * 
  * cdef inline _LineSegment ls2_rotate(const _LineSegment& segment, const _R2 center, double radians):             # <<<<<<<<<<<<<<
@@ -10291,8 +10255,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cycart_line, __pyx_k_cycart_line, sizeof(__pyx_k_cycart_line), 0, 0, 1, 1},
   {&__pyx_n_s_cycart_segment, __pyx_k_cycart_segment, sizeof(__pyx_k_cycart_segment), 0, 0, 1, 1},
   {&__pyx_n_s_dispatcher, __pyx_k_dispatcher, sizeof(__pyx_k_dispatcher), 0, 0, 1, 1},
-  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
-  {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_intersect, __pyx_k_intersect, sizeof(__pyx_k_intersect), 0, 0, 1, 1},
   {&__pyx_n_s_l1, __pyx_k_l1, sizeof(__pyx_k_l1), 0, 0, 1, 1},
@@ -10305,7 +10267,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_p1, __pyx_k_p1, sizeof(__pyx_k_p1), 0, 0, 1, 1},
   {&__pyx_n_s_p2, __pyx_k_p2, sizeof(__pyx_k_p2), 0, 0, 1, 1},
-  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_radius, __pyx_k_radius, sizeof(__pyx_k_radius), 0, 0, 1, 1},
   {&__pyx_n_s_seg, __pyx_k_seg, sizeof(__pyx_k_seg), 0, 0, 1, 1},
@@ -12512,143 +12473,6 @@ static PyObject* __pyx_convert__to_py_struct____pyx_t_6cycart_6native_6dtypes__R
   Py_DECREF(res);
   return NULL;
 }
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) ((int) 0 - (int) 1), const_zero = (int) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
-/* Print */
-#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static PyObject *__Pyx_GetStdout(void) {
-    PyObject *f = PySys_GetObject((char *)"stdout");
-    if (!f) {
-        PyErr_SetString(PyExc_RuntimeError, "lost sys.stdout");
-    }
-    return f;
-}
-static int __Pyx_Print(PyObject* f, PyObject *arg_tuple, int newline) {
-    int i;
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    for (i=0; i < PyTuple_GET_SIZE(arg_tuple); i++) {
-        PyObject* v;
-        if (PyFile_SoftSpace(f, 1)) {
-            if (PyFile_WriteString(" ", f) < 0)
-                goto error;
-        }
-        v = PyTuple_GET_ITEM(arg_tuple, i);
-        if (PyFile_WriteObject(v, f, Py_PRINT_RAW) < 0)
-            goto error;
-        if (PyString_Check(v)) {
-            char *s = PyString_AsString(v);
-            Py_ssize_t len = PyString_Size(v);
-            if (len > 0) {
-                switch (s[len-1]) {
-                    case ' ': break;
-                    case '\f': case '\r': case '\n': case '\t': case '\v':
-                        PyFile_SoftSpace(f, 0);
-                        break;
-                    default:  break;
-                }
-            }
-        }
-    }
-    if (newline) {
-        if (PyFile_WriteString("\n", f) < 0)
-            goto error;
-        PyFile_SoftSpace(f, 0);
-    }
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-}
-#else
-static int __Pyx_Print(PyObject* stream, PyObject *arg_tuple, int newline) {
-    PyObject* kwargs = 0;
-    PyObject* result = 0;
-    PyObject* end_string;
-    if (unlikely(!__pyx_print)) {
-        __pyx_print = PyObject_GetAttr(__pyx_b, __pyx_n_s_print);
-        if (!__pyx_print)
-            return -1;
-    }
-    if (stream) {
-        kwargs = PyDict_New();
-        if (unlikely(!kwargs))
-            return -1;
-        if (unlikely(PyDict_SetItem(kwargs, __pyx_n_s_file, stream) < 0))
-            goto bad;
-        if (!newline) {
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                goto bad;
-            if (PyDict_SetItem(kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                goto bad;
-            }
-            Py_DECREF(end_string);
-        }
-    } else if (!newline) {
-        if (unlikely(!__pyx_print_kwargs)) {
-            __pyx_print_kwargs = PyDict_New();
-            if (unlikely(!__pyx_print_kwargs))
-                return -1;
-            end_string = PyUnicode_FromStringAndSize(" ", 1);
-            if (unlikely(!end_string))
-                return -1;
-            if (PyDict_SetItem(__pyx_print_kwargs, __pyx_n_s_end, end_string) < 0) {
-                Py_DECREF(end_string);
-                return -1;
-            }
-            Py_DECREF(end_string);
-        }
-        kwargs = __pyx_print_kwargs;
-    }
-    result = PyObject_Call(__pyx_print, arg_tuple, kwargs);
-    if (unlikely(kwargs) && (kwargs != __pyx_print_kwargs))
-        Py_DECREF(kwargs);
-    if (!result)
-        return -1;
-    Py_DECREF(result);
-    return 0;
-bad:
-    if (kwargs != __pyx_print_kwargs)
-        Py_XDECREF(kwargs);
-    return -1;
-}
-#endif
-
 /* CIntFromPyVerify */
 #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
@@ -12670,43 +12494,6 @@ bad:
         }\
         return (target_type) value;\
     }
-
-/* PrintOne */
-#if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
-static int __Pyx_PrintOne(PyObject* f, PyObject *o) {
-    if (!f) {
-        if (!(f = __Pyx_GetStdout()))
-            return -1;
-    }
-    Py_INCREF(f);
-    if (PyFile_SoftSpace(f, 0)) {
-        if (PyFile_WriteString(" ", f) < 0)
-            goto error;
-    }
-    if (PyFile_WriteObject(o, f, Py_PRINT_RAW) < 0)
-        goto error;
-    if (PyFile_WriteString("\n", f) < 0)
-        goto error;
-    Py_DECREF(f);
-    return 0;
-error:
-    Py_DECREF(f);
-    return -1;
-    /* the line below is just to avoid C compiler
-     * warnings about unused functions */
-    return __Pyx_Print(f, NULL, 0);
-}
-#else
-static int __Pyx_PrintOne(PyObject* stream, PyObject *o) {
-    int res;
-    PyObject* arg_tuple = PyTuple_Pack(1, o);
-    if (unlikely(!arg_tuple))
-        return -1;
-    res = __Pyx_Print(stream, arg_tuple, 1);
-    Py_DECREF(arg_tuple);
-    return res;
-}
-#endif
 
 /* CIntFromPy */
 static CYTHON_INLINE enum __pyx_t_6cycart_6native_14does_intersect_IRES __Pyx_PyInt_As_enum____pyx_t_6cycart_6native_14does_intersect_IRES(PyObject *x) {
