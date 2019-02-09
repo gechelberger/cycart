@@ -11,7 +11,6 @@ from cycart.native.line cimport (
     l2_closest_point,
     l2_ref_f_of_x,
     l2_ref_f_of_y,
-    l2_l2_intersect,
     l2_normal,
     l2_approx,
     l2_point_on_side,
@@ -81,12 +80,6 @@ cdef class Line:
         if self.approx(other):
             raise ValueError("Lines are identical")
         return (self.data.a * other.data.b - self.data.b * other.data.a) != 0
-
-    def intersect(Line self, Line other not None) -> P2:
-        cdef P2 ret = P2.__new__(P2)
-        if not l2_l2_intersect(ret.data, self.data, other.data):
-            return None
-        return ret
 
     def f_of_y(Line self, double y) -> double:
         cdef double x

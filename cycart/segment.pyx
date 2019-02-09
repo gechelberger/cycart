@@ -8,6 +8,11 @@ from cycart.native.segment cimport (
     ls2_approx,
     ls2_center,
     ls2_length,
+    ls2_overlaps,
+)
+
+from cycart.native.intersect cimport (
+    ls2_ls2_intersect
 )
 
 from cycart.native.line cimport (
@@ -60,29 +65,20 @@ cdef class LineSegment:
         cdef _R2 around = _R2(0, 0) if center is None else center.data
         return py_seg_new(ls2_rotate(self.data, around, radians))
 
-
     def line(LineSegment self) -> Line:
         cdef Line ret = Line.__new__(Line)
         if not l2_ref_by_points(ret.data, self.data.p1, self.data.p2):
             raise RuntimeError("unknown error")
         return ret
 
+    def overlaps(LineSegment self, LineSegment other not None) -> bool:
+        return ls2_overlaps(self.data, other.data)
+
     def vector(LineSegment self) -> V2:
         return py_v2_new(ls2_vector(self.data))
 
     def center(LineSegment self) -> P2:
         return py_p2_new(ls2_center(self.data))
-
-    #def does_intersect(LineSegment self, LineSegment other not None) -> bool:
-    #    if self.approx(other):
-    #        raise ValueError("LineSegments are identical.")
-    #    return c.segment_segment_does_intersect(self.data, other.data)
-
-    #def intersect(LineSegment self, LineSegment other not None) -> P2:
-    #    cdef P2 ret = P2.__new__(P2)
-    #    if not c.segment_segment_intersect(ret.data, self.data, other.data):
-    #        return None
-    #    return ret
 
     def length(LineSegment self) -> double:
         return ls2_length(self.data)

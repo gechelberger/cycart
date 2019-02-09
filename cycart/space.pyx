@@ -52,7 +52,7 @@ def _sub(R2 lhs not None, R2 rhs not None):
 
 """
 
-cdef class V2:
+cdef class V2(R2):
 
     @property
     def x(self):
@@ -138,6 +138,9 @@ cdef class V2:
     def __repr__(V2 self):
         return 'V2(%f, %f)' % (self.data.x, self.data.y)
 
+    def __hash__(V2 self):
+        return hash((self.data.x, self.data.y))
+
 
 cdef class P2(R2):
 
@@ -216,4 +219,7 @@ cdef class P2(R2):
         return NotImplemented
 
     def __repr__(P2 self):
-        return 'P2(%f, %f)' % (self.data.x, self.data.y)
+        return 'P2(%f, %f)' % (self.x, self.y)
+
+    def __hash__(self):
+        return hash((self.x, self.y))

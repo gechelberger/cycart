@@ -38,6 +38,8 @@ cdef class Circle:
         return c2_area(self.data)
 
     def __init__(Circle self, double radius, P2 center=None):
+        if radius <= 0:
+            raise ValueError("radius must be greater than 0.")
         self.data.radius = radius
         self.data.center = _R2(0, 0) if center is None else center.data
 

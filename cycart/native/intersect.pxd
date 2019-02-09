@@ -13,6 +13,7 @@ from .space cimport (
     r2_dot,
     r2_mul,
     r2_ref_unit,
+    r2_parallel,
 )
 
 from .line cimport (
@@ -23,9 +24,9 @@ from .line cimport (
     l2_ref_f_of_y,
 )
 
-from .segment cimport ls2_contains, ls2_vector, ls2_approx
+from .segment cimport ls2_contains, ls2_vector, ls2_approx, ls2_overlaps
 
-from .does_intersect cimport c2_c2_does_intersect, IRES, ERROR, NO
+from .does_intersect cimport c2_c2_does_intersect, IRES, ERROR, NO, YES
 
 
 cdef inline bint l2_l2_intersect_set(vector[_R2]& out, const _Line& l1, const _Line& l2):
@@ -67,8 +68,11 @@ cdef inline bint c2_c2_intersect_set(vector[_R2]& out, const _Circle& c1, const 
     return True
 
 cdef inline bint ls2_ls2_intersect_set(vector[_R2]& out, const _LineSegment& ls1, const _LineSegment& ls2):
-    if ls2_approx(ls1, ls2):
+    if ls2_overlaps(ls1, ls2):
         return False
+
+    #if ls2_overlap(ls1, ls2) > 0:
+    #    return False
 
     cdef _R2 candidate
     if ls2_ls2_intersect(candidate, ls1, ls2):
@@ -96,6 +100,9 @@ cdef inline bint ls2_c2_intersect_set(vector[_R2]& out, const _LineSegment& seg,
 cdef inline bint ls2_l2_intersect_set(vector[_R2]& out, const _LineSegment& seg, const _Line line):
     cdef _Line seg_line
     if not l2_ref_by_points(seg_line, seg.p1, seg.p2):
+        return False
+
+    if l2_approx(line, seg_line):
         return False
 
     cdef _R2 candidate
@@ -162,7 +169,7 @@ cdef inline bint l2_l2_intersect(_R2& out, const _Line& l1, const _Line& l2):
     out.y = (l1.a * l2.c - l2.a * l1.c) / det
     return True
 
-cdef inline bint ls2_ls2_intersect(_R2&out, const _LineSegment ls1, const _LineSegment& ls2):
+cdef inline bint ls2_ls2_intersect(_R2& out, const _LineSegment ls1, const _LineSegment& ls2):
     cdef _R2 v1 = ls2_vector(ls1)
     cdef _R2 v2 = ls2_vector(ls2)
     cdef _R2 perp1 = _R2(-v1.y, v1.x)
@@ -174,4 +181,5 @@ cdef inline bint ls2_ls2_intersect(_R2&out, const _LineSegment ls1, const _LineS
     cdef double t = r2_dot(diff, perp1) / divisor
     if 0 <= t <= 1:
         (&out)[0] = r2_add(ls2.p1, r2_mul(v2, t))
+        return True
     return False

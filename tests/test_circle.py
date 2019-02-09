@@ -21,6 +21,14 @@ def test_circle_create():
     with pytest.raises(TypeError):
         Circle(None)
 
+def test_create_degenerate():
+
+    with pytest.raises(ValueError):
+        Circle(0)
+
+    with pytest.raises(ValueError):
+        Circle(-10)
+
 def test_circle_properties():
     circle = Circle(100)
 

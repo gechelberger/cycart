@@ -108,6 +108,29 @@ def test_line_segment_line():
 
     assert line != LineSegment(P2(-10, -10), P2(1, 0)).line()
 
+def test_segment_overlaps():
+    ls = LineSegment(P2(0, 0), P2(10, 10))
+
+    assert ls.overlaps(LineSegment(P2(0, 0), P2(10, 10)))
+    assert ls.overlaps(LineSegment(P2(0, 0), P2(5, 5)))
+    assert ls.overlaps(LineSegment(P2(10, 10), P2(5, 5)))
+
+    assert ls.overlaps(LineSegment(P2(5, 5), P2(6, 6)))
+    assert ls.overlaps(LineSegment(P2(5, 5), P2(15, 15)))
+    assert ls.overlaps(LineSegment(P2(-5, -5), P2(5, 5)))
+    assert ls.overlaps(LineSegment(P2(-5, -5), P2(15, 15)))
+
+    assert not ls.overlaps(LineSegment(P2(0, 0), P2(-5, -5)))
+    assert not ls.overlaps(LineSegment(P2(10, 10), P2(15, 15)))
+
+    assert not ls.overlaps(LineSegment(P2(15, 15), P2(20, 20)))
+    assert not ls.overlaps(LineSegment(P2(-15, -15), P2(-5, -5)))
+
+    assert not ls.overlaps(LineSegment(P2(5, 5), P2(0, 20)))
+
+    assert not ls.overlaps(LineSegment(P2(0, 10), P2(10, 0)))
+
+
 
 @pytest.mark.skip()
 def test_line_segment_does_intersect():

@@ -11,10 +11,11 @@ def test_create():
     assert line.b == 1
     assert line.c == 0
 
+
+def test_create_degenerate():
+
     with pytest.raises(ValueError):
         Line(0, 0, 0)
-
-def test_temporary_bug_in_line_coefficients():
 
     with pytest.raises(ValueError):
         Line(0, 0, 20)

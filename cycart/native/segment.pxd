@@ -10,6 +10,7 @@ from .space cimport (
     r2_approx,
     r2_ref_div,
     r2_rotate_around,
+    r2_cross,
     r2_ccw
 )
 
@@ -28,13 +29,16 @@ cdef inline _LineSegment ls2_normalized(const _LineSegment& segment):
 cdef inline double ls2_length(const _LineSegment& segment):
     return r2_magnitude(ls2_vector(segment))
 
-cdef inline bint ls2_contains(const _LineSegment& segment, const _R2& point, double rtol=1e-9, atol=0):
+cdef inline bint ls2_contains_strict(const _LineSegment& segment, const _R2& point):
     cdef _R2 ref_vector = ls2_vector(segment)
     cdef _R2 test_vector = r2_sub(point, segment.p1)
 
-    if not r2_parallel(ref_vector, test_vector, rtol, atol):
+    if not r2_parallel(ref_vector, test_vector):
         return 0
-    if 0 <= r2_dot(ref_vector, test_vector) <= r2_dot(ref_vector, ref_vector):
+    return 0 < r2_dot(ref_vector, test_vector) < r2_dot(ref_vector, ref_vector)
+
+cdef inline bint ls2_contains(const _LineSegment& segment, const _R2& point, double rtol=1e-9, atol=0):
+    if ls2_contains_strict(segment, point):
         return 1
     if r2_approx(segment.p1, point, rtol, atol):
         return 1
@@ -47,6 +51,18 @@ cdef inline bint ls2_approx(const _LineSegment& lhs, const _LineSegment& rhs, do
     cdef _LineSegment norm2 = ls2_normalized(rhs)
     return r2_approx(norm1.p1, norm2.p1, rtol, atol) and r2_approx(norm1.p2, norm2.p2, rtol, atol)
 
+cdef inline bint ls2_overlaps(const _LineSegment& ref, const _LineSegment& cmp):
+    cdef int count = 0
+    if ls2_contains(ref, cmp.p1):
+        count += 1
+    if ls2_contains(ref, cmp.p2):
+        count += 1
+    if ls2_contains_strict(cmp, ref.p1):
+        count += 1
+    if ls2_contains_strict(cmp, ref.p2):
+        count += 1
+
+    return count >= 2
 
 cdef inline _R2 ls2_vector(const _LineSegment& segment):
     return r2_sub(segment.p2, segment.p1)
