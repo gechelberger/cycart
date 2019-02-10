@@ -143,11 +143,13 @@ def test_polygon_centered_at(cw_polygon, ccw_polygon):
     assert P2(1, 1) == ccw_polygon.centered(P2(1, 1)).centroid()
 
 
-@pytest.mark.skip()
 def test_polygon_rotate(cw_polygon):
     rotated = cw_polygon.rotate(math.pi / 2, P2(0, 0))
-    #expected = ApproxSet({P2(0.0, 0.0), P2(0.0, 1.0), P2(-1.0, 1.0), P2(-1.0, 0.0)})
-    #assert expected == rotated.points()
+    points = tuple(rotated.points())
+    assert points[0] == P2(-1, 0)
+    assert points[1] == P2(0, 0)
+    assert points[2] == P2(0, 1)
+    assert points[3] == P2(-1, 1)
 
 
 def test_polygon_perimiter(cw_polygon):
