@@ -213,6 +213,23 @@ cdef class Polygon:
         return Polygon(points)
 """
 
+
+    def rotate(Polygon self, double radians):
+        cdef _R2 [::1] src = self._r2_buffer()
+        cdef array.array data = array.clone(_double_template_array, 2 * src.size, False)
+        cdef double [:src.size,:2] dest = <_R2[:src.size]>data.data.as_voidptr
+
+        cdef double rsin = sin(radians)
+        cdef double rcos = cos(radians)
+
+        cdef idx
+        for idx in range(src.size):
+            dest[idx, 0] = src[idx].x * rcos - src[idx].y * rsin
+            dest[idx, 1] = src[idx].x * rsin + src[idx].y * rcos
+
+        return Polygon(dest)
+
+
     def translate(Polygon self, V2 displacement not None):
         cdef _R2[::1] src = self._r2_buffer()
         cdef Polygon poly = Polygon.__new__(Polygon)
