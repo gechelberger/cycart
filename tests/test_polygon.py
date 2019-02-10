@@ -119,12 +119,12 @@ def test_polygon_create():
     with pytest.raises(TypeError):
         Polygon(None)
 
-@pytest.mark.skip()
+
 def test_polygon_eq(cw_polygon, ccw_polygon):
     assert cw_polygon == cw_polygon
-    assert cw_polygon != ccw_polygon  # we may want to fix this
+    assert cw_polygon == ccw_polygon
     assert not cw_polygon == None
-    assert not cw_polygon == Polygon([P2(0, 0), P2(1, 1), P2(0, 1)])
+    assert not cw_polygon == Polygon.Of([P2(0, 0), P2(1, 1), P2(0, 1)])
 
 
 def test_polygon_translate(cw_polygon, ccw_polygon):
@@ -163,7 +163,7 @@ def test_polygon_simple(ccw_polygon, cw_polygon, cw_concave):
 def test_intersecting(ccw_intersecting, cw_intersecting):
     assert not ccw_intersecting.is_simple()
     assert not cw_intersecting.is_simple()
-
+"""
 
 def test_ccw_polygon_contains(ccw_polygon):
     assert ccw_polygon.contains(P2(0.5, 0.5))
@@ -200,7 +200,7 @@ def test_cw_polygon_contains(cw_polygon):
     assert not cw_polygon.contains(P2(0, -0.00001))
     assert not cw_polygon.contains(P2(1.00001, 0))
     assert not cw_polygon.contains(P2(1, -0.00001))
-"""
+
 
 def test_ccw_polygon_centroid(ccw_polygon):
     assert ccw_polygon.centroid() == P2(0.5, 0.5)
