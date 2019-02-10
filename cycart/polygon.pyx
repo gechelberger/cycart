@@ -21,27 +21,6 @@ from typing import Iterable
 from .alg.convexhull import jarvis_march_convexhull
 
 """
-cdef bint has_next(Coursor cursor):
-    if cursor.idx >= cursor.count:
-        return 0
-    return 1
-
-cdef _R2 next_vertex(Coursor& c):
-    cdef _R2 temp
-    temp.x = c.data[2 * c.idx]
-    temp.y = c.data[2 * c.idx + 1]
-    c.idx += 1
-    return temp
-
-cdef _LineSegment next_edge(Coursor& c):
-    cdef _LineSegment temp
-    cdef int idx2 = (c.idx + 1) % c.count
-    temp.p1.x = c.data[2 * c.idx]
-    temp.p1.y = c.data[2 * c.idx + 1]
-    temp.p2.x = c.data[2 * idx2]
-    temp.p2.y = c.data[2 * idx2 + 1]
-    c.idx += 1
-    return temp
 """
 
 cdef array.array _double_template_array = array.array('d', [])
@@ -115,10 +94,18 @@ cdef class Polygon:
         cdef int c = len(self.__data) // 2
         return <_R2[:c]>self.__data.data.as_voidptr
 
-    cdef points(Polygon self):
+    cdef Cursor _cursor(Polygon self):
+        return Cursor(<_R2*>self.__data.data.as_voidptr, 0, len(self.__data) //2)
+
+    def points(Polygon self):
         cdef _R2 [::1] data = self._r2_buffer()
         for p in data:
-            yield py_p2_new(data)
+            yield py_p2_new(p)
+
+    def __str__(self):
+        cdef _R2 [::1] data = self._r2_buffer()
+        as_str = '\\n'.join('[%f, %f]' % (r['x'], r['y']) for r in data)
+        return "Polygon([%s])" % as_str
 
     """
     def points(Polygon self):
@@ -214,18 +201,27 @@ cdef class Polygon:
 """
 
 
+    def perimeter(Polygon self):
+        cdef double accum = 0
+        cdef Cursor coursor = self._cursor()
+        while has_next(coursor):
+            accum += ls2_length(next_edge(coursor))
+        return accum
+
     def rotate(Polygon self, double radians):
+        cdef _R2 temp
         cdef _R2 [::1] src = self._r2_buffer()
         cdef array.array data = array.clone(_double_template_array, 2 * src.size, False)
-        cdef double [:src.size,:2] dest = <_R2[:src.size]>data.data.as_voidptr
+        cdef double [:,::1] dest = <double[:src.size,:2]>data.data.as_voidptr
 
         cdef double rsin = sin(radians)
         cdef double rcos = cos(radians)
 
-        cdef idx
+        cdef int idx
         for idx in range(src.size):
-            dest[idx, 0] = src[idx].x * rcos - src[idx].y * rsin
-            dest[idx, 1] = src[idx].x * rsin + src[idx].y * rcos
+            temp = src[idx]
+            dest[idx, 0] = temp.x * rcos - temp.y * rsin
+            dest[idx, 1] = temp.x * rsin + temp.y * rcos
 
         return Polygon(dest)
 
