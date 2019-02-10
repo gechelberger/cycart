@@ -6,8 +6,8 @@ import array
 from libc.math cimport sin, cos, fabs
 
 from cycart.native.dtypes cimport _R2, _LineSegment
-from cycart.native.space cimport r2_sub, r2_add, r2_cross
-from cycart.native.segment cimport ls2_length
+from cycart.native.space cimport r2_sub, r2_add, r2_cross, r2_approx, r2_ccw
+from cycart.native.segment cimport ls2_length, ls2_contains
 
 from .space cimport P2, V2, py_p2_new
 from .space import P2, V2
@@ -40,6 +40,21 @@ cdef array.array make_table(points):
         dest.append(point.x)
         dest.append(point.y)
     return dest
+
+cdef inline void reorient(object[_R2, ndim=1] points):
+    # take a list of points where points[0] is the minimum point
+    # reorient cw -> ccw or ccw -> cw
+    cdef _R2 temp
+    cdef int idx = points.size - 1
+    cdef _R2 *p_low = &points[1]
+    cdef _R2 *p_high = &points[idx]
+    while p_high > p_low:
+        temp = p_low[0]
+        p_low[0] = p_high[0]
+        p_high[0] = temp
+        p_low += 1
+        p_high -= 1
+
 
 cdef class Polygon:
 
@@ -85,6 +100,10 @@ cdef class Polygon:
 
         self.__data = roll(<double[:p2table.size]>&p2table[0,0], -2 * min_idx)
 
+        if not self._is_ccw():
+            reorient(self._r2_buffer())
+
+
     cdef double[:,::1] _buffer(Polygon self):
         cdef int c = len(self.__data)
         return <double[:c/2,:2]>self.__data.data.as_doubles
@@ -95,6 +114,18 @@ cdef class Polygon:
 
     cdef Cursor _cursor(Polygon self):
         return Cursor(<_R2*>self.__data.data.as_voidptr, 0, len(self.__data) //2)
+
+    def is_ccw(Polygon self):
+        return self._is_ccw()
+
+    cdef bint _is_ccw(Polygon self):
+        cdef _LineSegment edge
+        cdef Cursor c = self._cursor()
+        cdef double accum = 0
+        while has_next(c):
+            edge = next_edge(c)
+            accum += r2_cross(edge.p1, edge.p2)
+        return accum > 0
 
     def points(Polygon self):
         cdef Cursor c = self._cursor()
@@ -145,7 +176,7 @@ cdef class Polygon:
     def area(Polygon self):
         return self._area()
 
-    @cython.boundscheck(False)
+    #@cython.boundscheck(False)
     cdef double _area(Polygon self):
         # shoelace algorithm
         cdef _R2 [::1] points = self._r2_buffer()
@@ -198,3 +229,58 @@ cdef class Polygon:
             dest[idx] = r2_add(src[idx], displacement)
 
         return poly
+
+    def contains_strict(Polygon self, P2 point not None):
+        return self._winding_number(point.data) > 0
+
+    def contains(Polygon self, P2 point not None, double rtol=1e-9, double atol=0):
+        if self.contains_strict(point):
+            return True
+        return self.on_perimeter(point, rtol, atol)
+
+    def on_perimeter(Polygon self, P2 point not None, double rtol=1e-9, double atol=0):
+        cdef _LineSegment temp
+        cdef Cursor c = self._cursor()
+        while has_next(c):
+            temp = next_edge(c)
+            if ls2_contains(temp, point.data, rtol, atol):
+                return True
+        return False
+
+    cdef double _winding_number(Polygon self, _R2 point):
+        cdef _LineSegment temp
+        cdef Cursor c = self._cursor()
+        cdef winding_number = 0
+        while has_next(c):
+            temp = next_edge(c)
+
+            if temp.p1.y <= point.y:
+                if temp.p2.y > point.y:
+                    if r2_ccw(temp.p1, temp.p2, point) > 0:
+                        winding_number += 1
+            else:
+                if temp.p2.y <= point.y:
+                    if r2_ccw(temp.p1, temp.p2, point) < 0:
+                        winding_number -= 1
+
+        return winding_number
+
+
+    def approx(Polygon self, Polygon other not None, double rtol=1e-9, double atol=0):
+        cdef _R2[::1] this = self._r2_buffer()
+        cdef _R2[::1] that = other._r2_buffer()
+
+        if this.size != that.size:
+            return False
+
+        cdef int idx
+        for idx in range(this.size):
+            if not r2_approx(this[idx], that[idx], rtol, atol):
+                return False
+
+        return True
+
+    def __eq__(self, other):
+        if isinstance(self, Polygon) and isinstance(other, Polygon):
+            return self.approx(other)
+        return NotImplemented

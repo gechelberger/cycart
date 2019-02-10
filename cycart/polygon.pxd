@@ -17,6 +17,8 @@ cdef class Polygon:
     cdef double _area(Polygon self)
     cdef _R2 _centroid(Polygon self)
     cdef Polygon _translate(Polygon self, _R2 displacement)
+    cdef bint _is_ccw(Polygon self)
+    cdef double _winding_number(Polygon self, _R2 point)
 
 
 
