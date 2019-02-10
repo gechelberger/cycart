@@ -62,7 +62,7 @@ CMDCLASS = {}
 if use_cython:
     CMDCLASS['build_ext'] = build_ext
 
-INSTALL_REQUIRES = ["multipledispatch", "numpy"]
+INSTALL_REQUIRES = ["multipledispatch"]
 
 TEST_LIBS = ["pytest"]
 DEV_LIBS = ["cython", "tox"]
@@ -78,7 +78,7 @@ setup(
     url="https://github.com/gechelberger/cycart",
     version="1.0.0a1",
     description="cython R2 euclidean geometry utility library",
-    packages=['cycart'],
+    packages=['cycart', 'cycart.alg'],
     cmdclass=CMDCLASS,
     setup_requires=["wheel", "numpy"],
     install_requires=INSTALL_REQUIRES,
