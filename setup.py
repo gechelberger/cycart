@@ -9,7 +9,6 @@ else:
     use_cython = True
 
 #todo: handle install if numpy not found
-import numpy as np
 
 library_name = 'cycart'
 def make_sources(*module_names, package_names=()):
@@ -36,22 +35,28 @@ extensions = [
         module_name,
         sources=[source],
         language='c++',
-        include_dirs=['cycart/', np.get_include()],
+        include_dirs=['cycart/'],
         libraries=[],
         extra_compile_args=['-O3'],
     )
     for module_name, source in sources.items()
 ]
 
-extensions.append(
+extensions.extend([
     Extension(
         'cycart.alg.convexhull',
         sources=['cycart/alg/convexhull.pyx'],
         language='c++',
-        include_dirs=[np.get_include()],
+        include_dirs=[],
         extra_compile_args=['-O3']
+    ),
+    Extension(
+        'cycart.alg.pointsort',
+        sources=['cycart/alg/pointsort.pyx'],
+        language='c++'
     )
-)
+])
+
 
 CMDCLASS = {}
 if use_cython:

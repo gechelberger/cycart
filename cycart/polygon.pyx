@@ -1,24 +1,21 @@
-
-from cycart.native.dtypes cimport _R2, _LineSegment
-from cycart.native.space cimport r2_sub, r2_add
+cimport cython
 
 from cpython cimport array
 import array
 
-
 from libc.math cimport sin, cos, fabs
 
-
+from cycart.native.dtypes cimport _R2, _LineSegment
+from cycart.native.space cimport r2_sub, r2_add, r2_cross
 from cycart.native.segment cimport ls2_length
 
 from .space cimport P2, V2, py_p2_new
 from .space import P2, V2
-
 from .segment cimport py_seg_new
 
 from typing import Iterable
 
-from .alg.convexhull import jarvis_march_convexhull
+from .alg.convexhull cimport _jarvis_march_convexhull
 
 """
 """
@@ -46,12 +43,14 @@ cdef array.array make_table(points):
 
 cdef class Polygon:
 
-    #@staticmethod
-    #def Hull(points : Iterable[P2]):
-    #    cdef np.ndarray[double, ndim=2] data = make_table(points)
-    #    cdef Polygon poly = Polygon.__new__(Polygon)
-    #    poly.__data = jarvis_march_convexhull(data)
-    #    return poly
+    @staticmethod
+    def Hull(points : Iterable[P2]):
+        cdef array.array cloud = make_table(points)
+        cdef Polygon poly = Polygon.__new__(Polygon)
+        poly.__data = _jarvis_march_convexhull(<_R2[:len(cloud)/2]>cloud.data.as_voidptr)
+
+        print('lendata', len(poly.__data))
+        return poly
 
     @staticmethod
     def Of(points : Iterable[P2]):
@@ -98,36 +97,26 @@ cdef class Polygon:
         return Cursor(<_R2*>self.__data.data.as_voidptr, 0, len(self.__data) //2)
 
     def points(Polygon self):
-        cdef _R2 [::1] data = self._r2_buffer()
-        for p in data:
-            yield py_p2_new(p)
+        cdef Cursor c = self._cursor()
+        while has_next(c):
+            yield py_p2_new(next_vertex(c))
+        c.idx = 0
+        yield py_p2_new(next_vertex(c))
+
+    def edges(Polygon self):
+        cdef Cursor c = self._cursor()
+        while has_next(c):
+            yield py_seg_new(next_edge(c))
 
     def __str__(self):
         cdef _R2 [::1] data = self._r2_buffer()
         as_str = '\\n'.join('[%f, %f]' % (r['x'], r['y']) for r in data)
         return "Polygon([%s])" % as_str
 
+    def __len__(Polygon self):
+        return len(self.__data)
+
     """
-    def points(Polygon self):
-        cdef Coursor coursor = self._coursor()
-        while has_next(coursor):
-            yield py_p2_new(next_vertex(coursor))
-
-    def edges(Polygon self):
-        cdef Coursor coursor = self._coursor()
-        while has_next(coursor):
-            yield py_seg_new(next_edge(coursor))
-
-    cdef Coursor _coursor(Polygon self):
-        return Coursor(<double*>self.__data.data, 0, self.__data.shape[0])
-
-    cdef np.ndarray[double, ndim=2] _buffer(Polygon self):
-        return self.__data
-
-    #def edges(Polygon self):
-    #    cdef Coursor coursor = self._coursor()
-    #    while has_next(coursor):
-    #        yield py_seg_new(next_edge(coursor))
 
     def __len__(Polygon self):
         return self.__data.shape[0]
@@ -177,13 +166,6 @@ cdef class Polygon:
         poly.__data[:, 1] = np.add(self.__data[:, 1], offset.y)
         return poly
 
-    def translate(Polygon self, V2 displacement):
-        cdef Polygon poly = Polygon.__new__(Polygon)
-        poly.__data = np.empty((self.__data.shape[0], 2))
-        poly.__data[:, 0] = np.add(self.__data[:, 0], displacement.data.x)
-        poly.__data[:, 1] = np.add(self.__data[:, 1], displacement.data.y)
-        return poly
-
     def rotate(Polygon self, double radians):
         cdef tempx, tempy
         cdef double rsin = sin(radians)
@@ -200,6 +182,44 @@ cdef class Polygon:
         return Polygon(points)
 """
 
+    def centered(Polygon self, P2 center=None):
+        cdef _R2 _center = _R2(0,0) if center is None else center.data
+        cdef _R2 offset = r2_sub(_center, self._centroid())
+        return self._translate(offset)
+
+    def centroid(Polygon self):
+        return py_p2_new(self._centroid())
+
+    cdef _R2 _centroid(Polygon self):
+        cdef double cx, cy, area, cross
+        cdef _LineSegment edge
+        cx = 0
+        cy = 0
+        area = 0
+
+        cdef Cursor coursor = self._cursor()
+        while has_next(coursor):
+            edge = next_edge(coursor)
+            cross = r2_cross(edge.p1, edge.p2)
+            cx += (edge.p1.x + edge.p2.x) * cross
+            cy += (edge.p1.y + edge.p2.y) * cross
+            area += cross
+        area *= 3
+        return _R2(cx / area, cy / area)
+
+
+    def area(Polygon self):
+        return self._area()
+
+    @cython.boundscheck(False)
+    cdef double _area(Polygon self):
+        # shoelace algorithm
+        cdef _R2 [::1] points = self._r2_buffer()
+        cdef double accum = r2_cross(points[points.size-1], points[0])
+        cdef int idx = 0
+        for idx in range(points.size-1):
+            accum += r2_cross(points[idx], points[idx+1])
+        return 0.5 * fabs(accum)
 
     def perimeter(Polygon self):
         cdef double accum = 0
@@ -208,7 +228,8 @@ cdef class Polygon:
             accum += ls2_length(next_edge(coursor))
         return accum
 
-    def rotate(Polygon self, double radians):
+    def rotate(Polygon self, double radians, P2 center=None):
+        cdef _R2 _center = self._centroid() if center is None else center.data
         cdef _R2 temp
         cdef _R2 [::1] src = self._r2_buffer()
         cdef array.array data = array.clone(_double_template_array, 2 * src.size, False)
@@ -219,21 +240,24 @@ cdef class Polygon:
 
         cdef int idx
         for idx in range(src.size):
-            temp = src[idx]
-            dest[idx, 0] = temp.x * rcos - temp.y * rsin
-            dest[idx, 1] = temp.x * rsin + temp.y * rcos
+            temp = r2_sub(src[idx], _center)
+            dest[idx, 0] = temp.x * rcos - temp.y * rsin + _center.x
+            dest[idx, 1] = temp.x * rsin + temp.y * rcos + _center.y
 
         return Polygon(dest)
 
 
     def translate(Polygon self, V2 displacement not None):
+        return self._translate(displacement.data)
+
+    cdef Polygon _translate(Polygon self, _R2 displacement):
         cdef _R2[::1] src = self._r2_buffer()
         cdef Polygon poly = Polygon.__new__(Polygon)
         poly.__data = array.clone(_double_template_array, 2 * src.size, False)
         cdef _R2[::1] dest = poly._r2_buffer()
 
-        cdef double x = displacement.data.x
-        cdef double y = displacement.data.y
+        cdef double x = displacement.x
+        cdef double y = displacement.y
 
         cdef int idx
         for idx in range(src.size):

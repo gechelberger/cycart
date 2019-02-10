@@ -14,6 +14,10 @@ cdef class Polygon:
 
     cdef Cursor _cursor(Polygon self)
 
+    cdef double _area(Polygon self)
+    cdef _R2 _centroid(Polygon self)
+    cdef Polygon _translate(Polygon self, _R2 displacement)
+
 
 
 cdef struct Cursor:
