@@ -44,7 +44,7 @@ cdef array.array make_table(points):
 cdef class Polygon:
 
     @staticmethod
-    def Hull(points : Iterable[P2]):
+    def Hull(points not None : Iterable[P2]):
         cdef array.array cloud = make_table(points)
         cdef Polygon poly = Polygon.__new__(Polygon)
         poly.__data = _jarvis_march_convexhull(<_R2[:len(cloud)/2]>cloud.data.as_voidptr)
@@ -53,7 +53,7 @@ cdef class Polygon:
         return poly
 
     @staticmethod
-    def Of(points : Iterable[P2]):
+    def Of(points not None : Iterable[P2]):
         cdef array.array data = make_table(points)
         cdef double[::1] dview = data
         return Polygon(<double[:dview.size//2,:2]>&dview[0])
@@ -68,7 +68,7 @@ cdef class Polygon:
         #return self._buffer()[:, 1]
         #return np.array(self.__data[:, 1], dtype=np.double)
 
-    def __init__(Polygon self, object[double, ndim=2] p2table):
+    def __init__(Polygon self, object[double, ndim=2] p2table not None):
         if p2table.shape[1] != 2:
             raise ValueError("Expected 2 columns for X and Y")
         if p2table.shape[0] < 3:
@@ -83,7 +83,7 @@ cdef class Polygon:
                 if p2table[idx,1] < p2table[min_idx,1]:
                     min_idx = idx
 
-        self.__data = roll(<double[:p2table.size]>&p2table[0,0], 2 * min_idx)
+        self.__data = roll(<double[:p2table.size]>&p2table[0,0], -2 * min_idx)
 
     cdef double[:,::1] _buffer(Polygon self):
         cdef int c = len(self.__data)
@@ -115,72 +115,6 @@ cdef class Polygon:
 
     def __len__(Polygon self):
         return len(self.__data)
-
-    """
-
-    def __len__(Polygon self):
-        return self.__data.shape[0]
-
-    def area(Polygon self):
-        return 0.5*fabs(np.dot(self.xs,np.roll(self.ys,1))-np.dot(self.ys,np.roll(self.xs,1)))
-
-    @cython.boundscheck(False)
-    @cython.wraparound(False)
-    def perimeter(Polygon self):
-        cdef double accum = 0
-        cdef Coursor coursor = self._coursor()
-        while has_next(coursor):
-            accum += ls2_length(next_edge(coursor))
-        return accum
-
-    def centroid(Polygon self):
-        return P2(0, 0)
-        #return py_p2_new(self._centroid())
-
-    #def _centroid(Polygon self):
-    #    cdef _R2 centroid
-    #    cdef double area = 0, cross
-    #    cdef _LineSegment edge
-    #    centroid.x = 0
-    #    centroid.y = 0
-    #    cdef Coursor coursor = self._coursor()
-    #    while has_next(coursor):
-    #        edge = next_edge(coursor)
-    #        cross = r2_cross(edge.p1, edge.p2)
-    #        centroid.x += (edge.p1.x + edge.p2.x) * cross
-    #        centroid.y += (edge.p1.y + edge.p2.y) * cross
-    #        area += cross
-    #    area *= 3
-    #    centroid.x = centroid.x / area
-    #    centroid.y = centroid.y / area
-    #    return centroid
-
-    def contains(Polygon self, P2 point):
-        pass
-
-    def centered_at(Polygon self, P2 new_center):
-        cdef _R2 offset = r2_sub(new_center.data, self.centroid().data)
-        cdef Polygon poly = Polygon.__new__(Polygon)
-        poly.__data = np.empty((self.__data.shape[0], 2))
-        poly.__data[:, 0] = np.add(self.__data[:, 0], offset.x)
-        poly.__data[:, 1] = np.add(self.__data[:, 1], offset.y)
-        return poly
-
-    def rotate(Polygon self, double radians):
-        cdef tempx, tempy
-        cdef double rsin = sin(radians)
-        cdef double rcos = cos(radians)
-        cdef np.ndarray[double, ndim=2] points = np.empty((self.__data.shape[0], 2))
-
-        cdef idx
-        for idx in range(self.__data.shape[0]):
-            tempx = self.__data[idx, 0]
-            tempy = self.__data[idx, 1]
-            points[idx, 0] = tempx * rcos - tempy * rsin
-            points[idx, 1] = tempx * rsin + tempy * rcos
-
-        return Polygon(points)
-"""
 
     def centered(Polygon self, P2 center=None):
         cdef _R2 _center = _R2(0,0) if center is None else center.data
@@ -261,6 +195,6 @@ cdef class Polygon:
 
         cdef int idx
         for idx in range(src.size):
-            dest[idx] = r2_add(src[idx], displacement.data)
+            dest[idx] = r2_add(src[idx], displacement)
 
         return poly

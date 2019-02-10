@@ -111,7 +111,13 @@ def test_polygon_create():
     assert points[2] == P2(0, 10)
 
     with pytest.raises(ValueError):
-        Polygon([P2(0, 0), P2(20, 20)])
+        Polygon.Of([P2(0, 0), P2(20, 20)])
+
+    with pytest.raises(TypeError):
+        Polygon.Of(None)
+
+    with pytest.raises(TypeError):
+        Polygon(None)
 
 @pytest.mark.skip()
 def test_polygon_eq(cw_polygon, ccw_polygon):
@@ -129,7 +135,7 @@ def test_polygon_translate(cw_polygon, ccw_polygon):
 
 
 def test_polygon_centered_at(cw_polygon, ccw_polygon):
-    assert P2(10, 10) == cw_polygon.centered_at(P2(10, 10)).centroid()
+    assert P2(10, 10) == cw_polygon.centered(P2(10, 10)).centroid()
 
     assert P2(0, 0) == cw_polygon.centered(P2(0, 0)).centroid()
     assert P2(1, 1) == cw_polygon.centered(P2(1, 1)).centroid()
@@ -226,7 +232,7 @@ def test_convex_hull(hull_data):
     # test_hull = _standard_form(convex_hull(point_cloud))
     # data_hull = _standard_form(hull)
 
-    assert Polygon(hull) == Polygon.Hull(point_cloud)
+    assert Polygon.Of(hull) == Polygon.Hull(point_cloud)
 
     # for a, e in zip(test_hull, data_hull):
     #    assert a == e
@@ -239,7 +245,7 @@ def test_convex_hull(hull_data):
 
 def test_centroid_odd():
     expected = P2(10, 10)
-    polygon = Polygon(
+    polygon = Polygon.Of(
         [P2(7, 9), P2(9, 9), P2(9, 7), P2(13, 11), P2(11, 11), P2(11, 13)]
     )
 
