@@ -4992,6 +4992,7 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_p2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):             # <<<<<<<<<<<<<<
  *     (&out)[0] = py_obj.data
+ * 
  */
 
 static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cycart_6native_6dtypes__R2 &__pyx_v_out, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
@@ -5003,6 +5004,8 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):
  *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):
  */
   __pyx_t_1 = __pyx_v_py_obj->__pyx_base.data;
   ((&__pyx_v_out)[0]) = __pyx_t_1;
@@ -5012,10 +5015,81 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):             # <<<<<<<<<<<<<<
  *     (&out)[0] = py_obj.data
+ * 
  */
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
+}
+
+/* "cycart/space.pxd":68
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ * 
+ */
+
+static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_5space_py_p2_extract(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_py_obj) {
+  struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("py_p2_extract", 0);
+
+  /* "cycart/space.pxd":69
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):
+ *     return py_obj.data             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):
+ */
+  __pyx_r = __pyx_v_py_obj->__pyx_base.data;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":68
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":71
+ *     return py_obj.data
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ */
+
+static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_5space_py_v2_extract(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
+  struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("py_v2_extract", 0);
+
+  /* "cycart/space.pxd":72
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):
+ *     return py_obj.data             # <<<<<<<<<<<<<<
+ */
+  __pyx_r = __pyx_v_py_obj->__pyx_base.data;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":71
+ *     return py_obj.data
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
 }
 
 static PyObject *__pyx_tp_new_6cycart_6circle_Circle(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
@@ -5625,11 +5699,11 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cycart/space.pxd":65
- *     (&out)[0] = py_obj.data
+  /* "cycart/space.pxd":71
+ *     return py_obj.data
  * 
- * cdef inline void v2_extract(_R2& out, V2 py_obj):             # <<<<<<<<<<<<<<
- *     (&out)[0] = py_obj.data
+ * cdef inline _R2 py_v2_extract(V2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
  */
 
   /*--- Wrapped vars code ---*/

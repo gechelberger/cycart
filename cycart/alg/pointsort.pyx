@@ -10,7 +10,7 @@ def pointsort(points):
     cdef vector[_R2] vec
     for p in points:
         vec.push_back(get_r2(p))
-    pointsort_heap(<_R2[:vec.size()]>&vec[0])
+    pointsort_heap(<_R2[:vec.size()]>vec.data())
     return tuple(py_p2_new(r) for r in vec)
 
 cdef inline _R2 get_r2(P2 inst):

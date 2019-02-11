@@ -5,12 +5,10 @@ from cpython cimport array
 
 from cycart.native.dtypes cimport _R2, _LineSegment
 
-cdef class Polygon:
-    cdef array.array __data
+from .sequence cimport P2Sequence
+from .sequence import P2Sequence
 
-    cdef double[:,::1] _buffer(Polygon self)
-
-    cdef _R2[::1] _r2_buffer(Polygon self)
+cdef class Polygon(P2Sequence):
 
     cdef Cursor _cursor(Polygon self)
 

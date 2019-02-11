@@ -18,5 +18,4 @@ cdef class P2MutableSequence(P2Sequence):
     cdef _extend_buffer(P2MutableSequence self, object[_R2, ndim=1] points)
 
 
-cdef inline _R2[::1] r2_buffer(object[double, ndim=2] points):
-    return <_R2[:points.shape[0]]><void*>&points[0, 0]
+cdef _R2[::1] r2_buffer(object[double, ndim=2] points)

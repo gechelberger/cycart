@@ -1130,7 +1130,7 @@ struct __pyx_obj_6cycart_3alg_9pointsort___pyx_scope_struct__pointsort {
 
 /* "cycart/alg/pointsort.pyx":14
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  *     return tuple(py_p2_new(r) for r in vec)             # <<<<<<<<<<<<<<
  * 
  * cdef inline _R2 get_r2(P2 inst):
@@ -2553,7 +2553,7 @@ static PyObject *__pyx_gb_6cycart_3alg_9pointsort_9pointsort_2generator(__pyx_Co
 
 /* "cycart/alg/pointsort.pyx":14
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  *     return tuple(py_p2_new(r) for r in vec)             # <<<<<<<<<<<<<<
  * 
  * cdef inline _R2 get_r2(P2 inst):
@@ -2684,7 +2684,7 @@ static PyObject *__pyx_pf_6cycart_3alg_9pointsort_pointsort(CYTHON_UNUSED PyObje
  *     cdef vector[_R2] vec
  *     for p in points:             # <<<<<<<<<<<<<<
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  */
   if (likely(PyList_CheckExact(__pyx_v_points)) || PyTuple_CheckExact(__pyx_v_points)) {
     __pyx_t_1 = __pyx_v_points; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
@@ -2732,7 +2732,7 @@ static PyObject *__pyx_pf_6cycart_3alg_9pointsort_pointsort(CYTHON_UNUSED PyObje
  *     cdef vector[_R2] vec
  *     for p in points:
  *         vec.push_back(get_r2(p))             # <<<<<<<<<<<<<<
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  *     return tuple(py_p2_new(r) for r in vec)
  */
     if (!(likely(((__pyx_v_p) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_p, __pyx_ptype_6cycart_5space_P2))))) __PYX_ERR(0, 12, __pyx_L1_error)
@@ -2748,7 +2748,7 @@ static PyObject *__pyx_pf_6cycart_3alg_9pointsort_pointsort(CYTHON_UNUSED PyObje
  *     cdef vector[_R2] vec
  *     for p in points:             # <<<<<<<<<<<<<<
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2756,11 +2756,11 @@ static PyObject *__pyx_pf_6cycart_3alg_9pointsort_pointsort(CYTHON_UNUSED PyObje
   /* "cycart/alg/pointsort.pyx":13
  *     for p in points:
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])             # <<<<<<<<<<<<<<
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())             # <<<<<<<<<<<<<<
  *     return tuple(py_p2_new(r) for r in vec)
  * 
  */
-  __pyx_t_5 = (&(__pyx_cur_scope->__pyx_v_vec[0]));
+  __pyx_t_5 = __pyx_cur_scope->__pyx_v_vec.data();
   if (!__pyx_t_5) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
     __PYX_ERR(0, 13, __pyx_L1_error)
@@ -2782,7 +2782,7 @@ static PyObject *__pyx_pf_6cycart_3alg_9pointsort_pointsort(CYTHON_UNUSED PyObje
 
   /* "cycart/alg/pointsort.pyx":14
  *         vec.push_back(get_r2(p))
- *     pointsort_heap(<_R2[:vec.size()]>&vec[0])
+ *     pointsort_heap(<_R2[:vec.size()]>vec.data())
  *     return tuple(py_p2_new(r) for r in vec)             # <<<<<<<<<<<<<<
  * 
  * cdef inline _R2 get_r2(P2 inst):
@@ -5541,6 +5541,7 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_p2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):             # <<<<<<<<<<<<<<
  *     (&out)[0] = py_obj.data
+ * 
  */
 
 static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cycart_6native_6dtypes__R2 &__pyx_v_out, struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
@@ -5552,6 +5553,8 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):
  *     (&out)[0] = py_obj.data             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):
  */
   __pyx_t_1 = __pyx_v_py_obj->__pyx_base.data;
   ((&__pyx_v_out)[0]) = __pyx_t_1;
@@ -5561,10 +5564,81 @@ static CYTHON_INLINE void __pyx_f_6cycart_5space_v2_extract(struct __pyx_t_6cyca
  * 
  * cdef inline void v2_extract(_R2& out, V2 py_obj):             # <<<<<<<<<<<<<<
  *     (&out)[0] = py_obj.data
+ * 
  */
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
+}
+
+/* "cycart/space.pxd":68
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ * 
+ */
+
+static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_5space_py_p2_extract(struct __pyx_obj_6cycart_5space_P2 *__pyx_v_py_obj) {
+  struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("py_p2_extract", 0);
+
+  /* "cycart/space.pxd":69
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):
+ *     return py_obj.data             # <<<<<<<<<<<<<<
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):
+ */
+  __pyx_r = __pyx_v_py_obj->__pyx_base.data;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":68
+ *     (&out)[0] = py_obj.data
+ * 
+ * cdef inline _R2 py_p2_extract(P2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cycart/space.pxd":71
+ *     return py_obj.data
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ */
+
+static CYTHON_INLINE struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_f_6cycart_5space_py_v2_extract(struct __pyx_obj_6cycart_5space_V2 *__pyx_v_py_obj) {
+  struct __pyx_t_6cycart_6native_6dtypes__R2 __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("py_v2_extract", 0);
+
+  /* "cycart/space.pxd":72
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):
+ *     return py_obj.data             # <<<<<<<<<<<<<<
+ */
+  __pyx_r = __pyx_v_py_obj->__pyx_base.data;
+  goto __pyx_L0;
+
+  /* "cycart/space.pxd":71
+ *     return py_obj.data
+ * 
+ * cdef inline _R2 py_v2_extract(V2 py_obj):             # <<<<<<<<<<<<<<
+ *     return py_obj.data
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
 }
 
 /* "FromPyStructUtility":11

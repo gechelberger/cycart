@@ -8,17 +8,17 @@ from cycart import P2, Polygon, V2
 
 @pytest.fixture
 def ccw_polygon():
-    return Polygon.Of([P2(0, 0), P2(1, 0), P2(1, 1), P2(0, 1)])
+    return Polygon([P2(0, 0), P2(1, 0), P2(1, 1), P2(0, 1)])
 
 
 @pytest.fixture
 def cw_polygon():
-    return Polygon.Of([P2(0, 0), P2(0, 1), P2(1, 1), P2(1, 0)])
+    return Polygon([P2(0, 0), P2(0, 1), P2(1, 1), P2(1, 0)])
 
 
 @pytest.fixture
 def ccw_intersecting():
-    return Polygon.Of([P2(0, 0), P2(1, 1), P2(0, 1), P2(1, 0)])
+    return Polygon([P2(0, 0), P2(1, 1), P2(0, 1), P2(1, 0)])
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def cw_intersecting():
 
 @pytest.fixture
 def cw_concave():
-    return Polygon.Of([P2(-1, -1), P2(1, -1), P2(0, 0), P2(1, 1), P2(-1, 1)])
+    return Polygon([P2(-1, -1), P2(1, -1), P2(0, 0), P2(1, 1), P2(-1, 1)])
 
 
 @pytest.fixture
@@ -92,29 +92,29 @@ def hull_data():
 
 def test_polygon_create():
 
-    p = Polygon.Of([P2(0, 0), P2(10, 0), P2(0, 10)])
+    p = Polygon([P2(0, 0), P2(10, 0), P2(0, 10)])
     points = tuple(p.points())
     assert points[0] == P2(0, 0)
     assert points[1] == P2(10, 0)
     assert points[2] == P2(0, 10)
 
-    p = Polygon.Of([P2(10, 0), P2(0, 10), P2(0, 0)])
+    p = Polygon([P2(10, 0), P2(0, 10), P2(0, 0)])
     points = tuple(p.points())
     assert points[0] == P2(0, 0)
     assert points[1] == P2(10, 0)
     assert points[2] == P2(0, 10)
 
-    p = Polygon.Of([P2(0, 10), P2(0, 0), P2(10, 0)])
+    p = Polygon([P2(0, 10), P2(0, 0), P2(10, 0)])
     points = tuple(p.points())
     assert points[0] == P2(0, 0)
     assert points[1] == P2(10, 0)
     assert points[2] == P2(0, 10)
 
     with pytest.raises(ValueError):
-        Polygon.Of([P2(0, 0), P2(20, 20)])
+        Polygon([P2(0, 0), P2(20, 20)])
 
     with pytest.raises(TypeError):
-        Polygon.Of(None)
+        Polygon(None)
 
     with pytest.raises(TypeError):
         Polygon(None)
@@ -124,7 +124,7 @@ def test_polygon_eq(cw_polygon, ccw_polygon):
     assert cw_polygon == cw_polygon
     assert cw_polygon == ccw_polygon
     assert not cw_polygon == None
-    assert not cw_polygon == Polygon.Of([P2(0, 0), P2(1, 1), P2(0, 1)])
+    assert not cw_polygon == Polygon([P2(0, 0), P2(1, 1), P2(0, 1)])
 
 
 def test_polygon_translate(cw_polygon, ccw_polygon):
@@ -234,7 +234,7 @@ def test_convex_hull(hull_data):
     # test_hull = _standard_form(convex_hull(point_cloud))
     # data_hull = _standard_form(hull)
 
-    assert Polygon.Of(hull) == Polygon.Hull(point_cloud)
+    assert Polygon(hull) == Polygon.Hull(point_cloud)
 
     # for a, e in zip(test_hull, data_hull):
     #    assert a == e
@@ -247,7 +247,7 @@ def test_convex_hull(hull_data):
 
 def test_centroid_odd():
     expected = P2(10, 10)
-    polygon = Polygon.Of(
+    polygon = Polygon(
         [P2(7, 9), P2(9, 9), P2(9, 7), P2(13, 11), P2(11, 11), P2(11, 13)]
     )
 

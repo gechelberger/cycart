@@ -1,5 +1,4 @@
-from cpython cimport array
-
+from libcpp.vector cimport vector
 from cycart.native.dtypes cimport _R2
 
-cdef array.array _jarvis_march_convexhull(object[_R2, ndim=1] points)
+cdef vector[_R2] _jarvis_march_convexhull(object[_R2, ndim=1] points)

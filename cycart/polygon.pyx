@@ -1,17 +1,19 @@
 cimport cython
 
-from cpython cimport array
-import array
+from libcpp.vector cimport vector
 
 from libc.math cimport sin, cos, fabs
 
 from cycart.native.dtypes cimport _R2, _LineSegment
-from cycart.native.space cimport r2_sub, r2_add, r2_cross, r2_approx, r2_ccw
+from cycart.native.space cimport r2_sub, r2_add, r2_cross, r2_approx, r2_ccw, r2_cmp_points
 from cycart.native.segment cimport ls2_length, ls2_contains
 
-from .space cimport P2, V2, py_p2_new
+from .space cimport P2, V2, py_p2_new, py_p2_extract
 from .space import P2, V2
 from .segment cimport py_seg_new
+
+from .sequence cimport P2Sequence, r2_buffer
+from .sequence import P2Sequence
 
 from typing import Iterable
 
@@ -20,11 +22,11 @@ from .alg.convexhull cimport _jarvis_march_convexhull
 """
 """
 
-cdef array.array _double_template_array = array.array('d', [])
 
-cdef array.array roll(double[::1] src, int shift):
-    cdef int idx_in, idx_out
-    cdef array.array dest = array.clone(_double_template_array, src.size, False)
+cdef vector[_R2] roll(object[_R2, ndim=1] src, long shift):
+    cdef long idx_in, idx_out
+    cdef vector[_R2] dest
+    dest.resize(src.size)
 
     shift = shift % src.size
 
@@ -32,13 +34,6 @@ cdef array.array roll(double[::1] src, int shift):
         idx_out = (idx_in + shift) % src.size
         dest[idx_out] = src[idx_in]
 
-    return dest
-
-cdef array.array make_table(points):
-    cdef array.array dest = array.array('d', [])
-    for point in points:
-        dest.append(point.x)
-        dest.append(point.y)
     return dest
 
 cdef inline void reorient(object[_R2, ndim=1] points):
@@ -56,64 +51,45 @@ cdef inline void reorient(object[_R2, ndim=1] points):
         p_high -= 1
 
 
-cdef class Polygon:
+cdef class Polygon(P2Sequence):
 
     @staticmethod
     def Hull(points not None : Iterable[P2]):
-        cdef array.array cloud = make_table(points)
+        cdef vector[_R2] point_cloud
+        for point in points:
+            point_cloud.push_back(py_p2_extract(point))
         cdef Polygon poly = Polygon.__new__(Polygon)
-        poly.__data = _jarvis_march_convexhull(<_R2[:len(cloud)/2]>cloud.data.as_voidptr)
-
-        print('lendata', len(poly.__data))
+        poly.__data = _jarvis_march_convexhull(
+            <_R2[:point_cloud.size()]>point_cloud.data()
+        )
         return poly
 
     @staticmethod
-    def Of(points not None : Iterable[P2]):
-        cdef array.array data = make_table(points)
-        cdef double[::1] dview = data
-        return Polygon(<double[:dview.size//2,:2]>&dview[0])
+    def from_buffer(object[double, ndim=2] buffer not None):
+        cdef Polygon poly = Polygon.__new__(Polygon)
+        poly._set_buffer(buffer)
+        return poly
 
-    @property
-    def xs(self):
-        return array.array('d', self._buffer()[:,0])
+    def __init__(Polygon self, object points not None):
+        super().__init__(points)
+        self._normalize()
 
-    @property
-    def ys(self):
-        return array.array('d', self._buffer()[:,1])
-        #return self._buffer()[:, 1]
-        #return np.array(self.__data[:, 1], dtype=np.double)
-
-    def __init__(Polygon self, object[double, ndim=2] p2table not None):
-        if p2table.shape[1] != 2:
-            raise ValueError("Expected 2 columns for X and Y")
-        if p2table.shape[0] < 3:
+    def _normalize(Polygon self):
+        if self.__data.size() < 3:
             raise ValueError("Polygon must have at least 3 points.")
-
         cdef int idx, min_idx
         min_idx = 0
-        for idx in range(1, p2table.shape[0]):
-            if p2table[idx, 0] < p2table[min_idx,0]:
+        for idx in range(1, self.__data.size()):
+            if r2_cmp_points(self.__data[idx], self.__data[min_idx]) < 0:
                 min_idx = idx
-            elif p2table[idx, 0] == p2table[min_idx,0]:
-                if p2table[idx,1] < p2table[min_idx,1]:
-                    min_idx = idx
 
-        self.__data = roll(<double[:p2table.size]>&p2table[0,0], -2 * min_idx)
+        self.__data = roll(self._r2_buffer(), -min_idx)
 
         if not self._is_ccw():
             reorient(self._r2_buffer())
 
-
-    cdef double[:,::1] _buffer(Polygon self):
-        cdef int c = len(self.__data)
-        return <double[:c/2,:2]>self.__data.data.as_doubles
-
-    cdef _R2[::1] _r2_buffer(Polygon self):
-        cdef int c = len(self.__data) // 2
-        return <_R2[:c]>self.__data.data.as_voidptr
-
     cdef Cursor _cursor(Polygon self):
-        return Cursor(<_R2*>self.__data.data.as_voidptr, 0, len(self.__data) //2)
+        return Cursor(<_R2*>self.__data.data(), 0, self.__data.size())
 
     def is_ccw(Polygon self):
         return self._is_ccw()
@@ -196,38 +172,37 @@ cdef class Polygon:
     def rotate(Polygon self, double radians, P2 center=None):
         cdef _R2 _center = self._centroid() if center is None else center.data
         cdef _R2 temp
-        cdef _R2 [::1] src = self._r2_buffer()
-        cdef array.array data = array.clone(_double_template_array, 2 * src.size, False)
-        cdef double [:,::1] dest = <double[:src.size,:2]>data.data.as_voidptr
+        cdef Polygon poly = Polygon.__new__(Polygon)
+        poly.__data.resize(self.__data.size())
 
         cdef double rsin = sin(radians)
         cdef double rcos = cos(radians)
 
         cdef int idx
-        for idx in range(src.size):
-            temp = r2_sub(src[idx], _center)
-            dest[idx, 0] = temp.x * rcos - temp.y * rsin + _center.x
-            dest[idx, 1] = temp.x * rsin + temp.y * rcos + _center.y
+        for idx in range(self.__data.size()):
+            temp = r2_sub(self.__data[idx], _center)
+            poly.__data[idx].x = temp.x * rcos - temp.y * rsin + _center.x
+            poly.__data[idx].y = temp.x * rsin + temp.y * rcos + _center.y
 
-        return Polygon(dest)
+        poly._normalize()
+        return poly
 
 
     def translate(Polygon self, V2 displacement not None):
         return self._translate(displacement.data)
 
     cdef Polygon _translate(Polygon self, _R2 displacement):
-        cdef _R2[::1] src = self._r2_buffer()
         cdef Polygon poly = Polygon.__new__(Polygon)
-        poly.__data = array.clone(_double_template_array, 2 * src.size, False)
-        cdef _R2[::1] dest = poly._r2_buffer()
+        poly.__data.resize(self.__data.size())
 
         cdef double x = displacement.x
         cdef double y = displacement.y
 
         cdef int idx
-        for idx in range(src.size):
-            dest[idx] = r2_add(src[idx], displacement)
+        for idx in range(self.__data.size()):
+            poly.__data[idx] = r2_add(self.__data[idx], displacement)
 
+        # already normalized as long as this one is
         return poly
 
     def contains_strict(Polygon self, P2 point not None):

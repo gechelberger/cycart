@@ -11,6 +11,9 @@ from cycart.space import P2
 
 from collections.abc import Sequence, MutableSequence
 
+cdef _R2[::1] r2_buffer(object[double, ndim=2] points):
+    assert points.shape[1] == 2
+    return <_R2[:points.shape[0]]><void*>&points[0, 0]
 
 cdef class P2Sequence:
 
