@@ -64,3 +64,9 @@ cdef inline void p2_extract(_R2& out, P2 py_obj):
 
 cdef inline void v2_extract(_R2& out, V2 py_obj):
     (&out)[0] = py_obj.data
+
+cdef inline _R2 py_p2_extract(P2 py_obj):
+    return py_obj.data
+
+cdef inline _R2 py_v2_extract(V2 py_obj):
+    return py_obj.data
