@@ -5,6 +5,7 @@ from .circle import Circle
 from .does_intersect import does_intersect
 from .intersect import intersect
 from .polygon import Polygon
+from .sequence import P2Sequence, P2MutableSequence
 
 __all__ = (
     "V2",
@@ -15,4 +16,6 @@ __all__ = (
     "Polygon",
     "does_intersect",
     "intersect",
+    "P2Sequence",
+    "P2MutableSequence",
 )

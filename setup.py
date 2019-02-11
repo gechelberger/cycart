@@ -27,6 +27,7 @@ sources = make_sources(
     'does_intersect',
     'intersect',
     'polygon',
+    'sequence',
     #'rasterize',
 )
 
